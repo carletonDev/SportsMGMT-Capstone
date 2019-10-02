@@ -1,0 +1,80 @@
+﻿@model SportsMGMTApp.Models.LoginUser
+@{
+    ViewBag.Title = "Login";
+
+}
+    <a href=@Url.Action("ForgotPassword","User") class="btn btn-primary btn-icon-split">
+        <span class="icon text-white-50">
+            <i class="fas fa-flag"></i>
+        </span>
+        <span class="text">Forgot Password?</span>
+    </a>
+<div class="container-fluid">
+    <div class="row no-gutter">
+    <div class="col-md-8 col-lg-6">
+        <div class="login d-flex align-items-center py-5">
+            <div class="container">
+            <div class="row">
+                <div class="col-md-9 col-lg-8 mx-auto">
+                    <br />
+                    <h3 class="headline_description">Login</h3>
+
+                    @using (Html.BeginForm("Login", "User"))
+                    {
+
+                        if (ViewBag.Message == "Login Successful!")
+                        {
+                            //display success message in green boarder
+                            <div class="alert alert-success" role="alert">
+                                @ViewBag.Message
+                            </div>
+                        }
+                        else if (ViewBag.Message == "Invalid UserName and/or Password")
+                        {
+                            //display red message if exception thrown
+                            <div class="alert alert-danger" role="alert">
+                                @ViewBag.Message
+                            </div>
+                        }
+                        else if (ViewBag.Message == "Password changed")
+                        {
+                            // display success message in green boarder
+                            <div class="alert alert-success" role="alert">
+                                @ViewBag.Message
+                            </div>
+                        }
+                        else if (ViewBag.Message == "Login Failed!")
+                        {
+                            //display red message if exception thrown
+                            <div class="alert alert-danger" role="alert">
+                                @ViewBag.Message
+                            </div>
+                        }
+                        else
+                        {
+
+                        }
+
+
+                        <!-- Create a Form that gets the Values for a User in the database, and has a submit and clear buttons-->
+                        <div class="form-group">
+                            <label for="Login">Login</label>
+                            @Html.EditorFor(model => model.UserName, new { htmlattributes = new { @class = "form-control", @placeholder = "UserName", } })
+                            @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group">
+                            <label for="Password">Password</label>
+                            @Html.EditorFor(model => model.Password, new { htmlattributes = new { @class = "form-control", @placeholder = "Password" } })
+                            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                        </div>
+                        <button class="btn btn-lg btn-primary btn-block btn-login text-uppercase font-weight-bold mb-2" type="submit">Sign in</button>
+                        @Html.ActionLink("Register", "UserRegister", "User", new { @class = "btn btn-lg btn-primary btn-block btn-login text-uppercase font-weight-bold mb-2" })
+                    }
+                </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+ </div>
+

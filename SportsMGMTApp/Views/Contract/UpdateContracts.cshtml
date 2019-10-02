@@ -1,0 +1,69 @@
+﻿@model SportsMGMTApp.Models.ContractModel
+
+@{
+
+    if (ViewBag.Message == "Update Successful")
+    {
+        //display success message in green boarder
+        <div class="alert alert-success" role="alert">
+            @ViewBag.Message
+        </div>
+    }
+    else if (ViewBag.Message == "Update Failed")
+    {
+        //display red message if exception thrown
+        <div class="alert alert-danger" role="alert">
+            @ViewBag.Message
+        </div>
+    }
+    else if (ViewBag.Message == "Model State Not Valid")
+    {
+        // display success message in green boarder
+        <div class="alert alert-danger" role="alert">
+            @ViewBag.Message
+        </div>
+    }
+    else
+    {
+
+    }
+}
+<a href=@Url.Action("ListContracts", "Contract") class="btn btn-primary btn-icon-split">
+<span class="icon text-white-50">
+    <i class="fas fa-flag"></i>
+</span>
+<span class="text">Back to List</span>
+</a>
+<br />
+@using (Html.BeginForm())
+{
+
+
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.ContractID)
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.ContractType, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.ContractType, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.ContractType, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Salary, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Salary, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Salary, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Update" class="btn btn-primary" />
+        </div>
+    </div>
+}
+
+

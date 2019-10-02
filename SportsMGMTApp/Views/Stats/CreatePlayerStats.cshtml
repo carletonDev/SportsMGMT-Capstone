@@ -1,0 +1,100 @@
+﻿@model SportsMGMTApp.Models.PlayerStatsModel
+
+@{
+    var user = Session["Users"] as SportsMGMTCommon.Users;
+
+    if (ViewBag.Message == "Stat already created for Player Please Update!")
+    {
+        <div class="alert alert-danger" role="alert">
+            @ViewBag.Message
+        </div>
+    }
+    else if (ViewBag.Message == "Player Stat Created!")
+    {
+        <div class="alert alert-success" role="alert">
+            @ViewBag.Message
+        </div>
+    }
+    else if (ViewBag.Message == "Player Stat Was Not Created!")
+    {
+        <div class="alert alert-danger" role="alert">
+            @ViewBag.Message
+        </div>
+    }
+    else if (ViewBag.Message == "Invalid Entry")
+    {
+        <div class="alert alert-danger" role="alert">
+            @ViewBag.Message
+        </div>
+    }
+    else
+    {
+
+    }
+
+}
+<h2>Create New Stat</h2>
+
+<a href=@Url.Action("ListGameAttendance", "Attendance") class="btn btn-primary btn-icon-split">
+    <span class="icon text-white-50">
+        <i class="fas fa-flag"></i>
+    </span>
+    <span class="text">Back to List</span>
+</a>
+
+@using (Html.BeginForm())
+{
+
+<div class="form-group">
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.GameID)
+    <div class="form-group">
+        @Html.LabelFor(model => model.UserID, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="form-control-lg">
+            @Html.DropDownListFor(model => model.UserID, Model.GetUsers(user.TeamID), new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.UserID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Points, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+                @Html.EditorFor(model => model.Points, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Points, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Assists, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+                @Html.EditorFor(model => model.Assists, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Assists, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Rebounds, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+                @Html.EditorFor(model => model.Rebounds, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Rebounds, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Misses, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">       
+                @Html.EditorFor(model => model.Misses, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Misses, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Create" class="btn btn-primary" />
+        </div>
+    </div>
+</div>
+}
+
+<a href=@Url.Action("StatTable", "Stats") class="btn btn-primary btn-icon-split">
+    <span class="icon text-white-50">
+        <i class="fas fa-flag"></i>
+    </span>
+    <span class="text">View all Stats</span>
+</a>

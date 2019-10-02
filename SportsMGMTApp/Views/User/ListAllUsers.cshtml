@@ -1,0 +1,149 @@
+﻿@model List<SportsMGMTCommon.Users>
+
+@{
+    ViewBag.Title = "View All Users";
+    var user = Session["Users"] as SportsMGMTCommon.Users;
+
+    if (ViewBag.Message == "Player Removed from Team")
+    {
+        //display green message
+        <div class="alert alert-success" role="alert">
+            @ViewBag.Message
+        </div>
+    }
+    else if (ViewBag.Message == "Player Was Not Removed")
+    {
+        //display red message if exception thrown
+        <div class="alert alert-danger" role="alert">
+            @ViewBag.Message
+        </div>
+    }
+    else
+    {
+
+    }
+}
+
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">All Users</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>
+                            Team Name
+                        </th>
+                        <th>
+                            Contract Type
+                        </th>
+                        <th>
+                            Full Name
+                        </th>
+                        <th>
+                            Last Modified By
+                        </th>
+                        <th>
+                            Role
+                        </th>
+                        <th>
+                            Address
+                        </th>
+                        <th>
+                            E-Mail
+                        </th>
+                        <th>
+                            Phone
+                        </th>
+                        <th>
+                            UserName
+                        </th>
+                        <th>
+                            Password
+                        </th>
+                        <th>
+                            Injury Status
+                        </th>
+                        <th>
+                            Injury Description
+                        </th>
+                        <th>
+                            Contract Duration
+                        </th>
+                        <th>
+                            Contract Start
+                        </th>
+                        <th>Update/Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.FormatValue(item.TeamID, SportsMGMTApp.Models.UserModel.TeamName(item.TeamID))
+                            </td>
+                            <td>
+                                @Html.FormatValue(item.ContractID, SportsMGMTApp.Models.UserModel.FindContractName(item.ContractID))
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FullName)
+                            </td>
+                            <td>
+                                @Html.FormatValue(item.UserModified, SportsMGMTApp.Models.UserModel.WhoModified(item.UserModified))
+                            </td>
+                            <td>
+                                @Html.FormatValue(item.RoleID, SportsMGMTApp.Models.UserModel.RoleName(item.RoleID))
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Address)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Email)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Phone)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UserName)
+                            </td>
+                            <td>
+                                @Html.HiddenFor(modelItem => item.Password)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.InjuryStatus)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.InjuryDescription)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ContractDuration)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ContractStart)
+                            </td>
+                            @{ if (user.RoleID == 1)
+                                {
+                                    <td>
+                                        @Html.ActionLink("Edit", "AssignContract", new { Controller="Home" ,Action="Assign Contract", id = item.UserID }) |
+                                        @Html.ActionLink("Delete", "DeleteUser", new { id = item.UserID })
+                                    </td>
+                                }
+                                else
+                                {
+                        <td>
+                            @Html.ActionLink("Remove From Team", "UpdateTeam", new { id = item.UserID }) |
+                            @Html.ActionLink("Edit", "AssignContract", new { Controller = "Home", Action = "Assign Contract", id = item.UserID })
+                        </td>
+                                }
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,168 @@
+﻿@model List<SportsMGMTCommon.Users>
+@{
+    ViewBag.Title = "DashboardAdmin";
+    var user = Session["Users"] as SportsMGMTCommon.Users;
+    var dashboard = Session["Dash"] as SportsMGMTCommon.DashBoard;
+        var roles = Session["Roles"] as string;
+}
+
+<h2> Hello @roles @user.FullName</h2>
+
+<!-- Cards displayed on top -->
+<div class="row">
+
+    <!-- Days remaining till users contract expires -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1"> My Contract Time Remaining</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">@dashboard.DaysRemaining</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Average Salary Card -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-success shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Average Contract Salary Given</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">@Math.Round(dashboard.AverageSalary,2)</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Cap Space Remaining -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-info shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Salary Cap Remaining</div>
+                        <div class="row no-gutters align-items-center">
+                            <div class="col-auto">
+                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">@dashboard.PercentageCap.ToString("P1")</div>
+                            </div>
+                            <div class="col">
+                                <div class="progress progress-sm mr-2">
+                                    <div class="progress-bar bg-info" role="progressbar" style="width:@dashboard.PercentageCap.ToString("P1")" aria-valuenow="@dashboard.CapSpace.ToString()" aria-valuemin="0" aria-valuemax="@dashboard.TeamSalary.ToString()"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-coins fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pending Requests Card Example -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-warning shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Team Win/Loss Ratio</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">@dashboard.TeamWins.ToString() : @dashboard.TeamLosses.ToString()</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-cog fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Data Table to Assign Roles-->
+<div class="card shadow mb-4">
+    <a href="#ContractAssign" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="ContractAssign">
+        <h6 class="m-0 font-weight-bold text-primary">Users Without Contracts</h6>
+    </a>
+</div>
+<div class="collapse show" id="ContractAssign">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Assign Contract</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.FullName</td>
+                            <td>@item.Email</td>
+                            <td>@item.Phone</td>
+                            <td>
+                                @Html.ActionLink("Assign", "AssignContract", new { id = item.UserID })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!--Data Table to View Roster and Email-->
+<div class="card shadow mb-4">
+    <a href="#MyRoster" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="MyRoster">
+        <h6 class="m-0 font-weight-bold text-primary">@dashboard.MyTeam</h6>
+    </a>
+</div>
+<div class="collapse show" id="MyRoster">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Injury Status</th>
+                        <th>Injury Description</th>
+                        <th>Email User</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in dashboard.MyRoster)
+                    {
+                        <tr>
+                            <td>@item.FullName</td>
+                            <td><a href="mailto:@item.Email">@item.Email</a></td>
+                            <td>@item.Phone</td>
+                            <td>@item.InjuryStatus</td>
+                            <td>@item.InjuryDescription</td>
+                            <td>
+                                @Html.ActionLink("Send Email", "Email", new { Email=item.Email })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+

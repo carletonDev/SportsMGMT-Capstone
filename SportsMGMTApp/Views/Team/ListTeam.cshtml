@@ -1,0 +1,70 @@
+﻿@model List<SportsMGMTCommon.Team>
+
+@{
+    ViewBag.Title = "List Teams";
+}
+
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">All Teams</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>
+                            Salary Cap
+                        </th>
+                        <th>
+                            Team Name
+                        </th>
+                        <th>
+                            Team Type
+                        </th>
+                        <th>
+                            Wins
+                        </th>
+                        <th>
+                            Losses
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SalaryCap)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TeamName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TeamType)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Wins)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Losses)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Edit", "UpdateTeam", new { id = item.TeamID }) |
+                                @Html.ActionLink("Delete", "DeleteTeam", new { id = item.TeamID })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<a href=@Url.Action("CreateTeam", "Team") class="btn btn-primary btn-icon-split">
+    <span class="icon text-white-50">
+        <i class="fas fa-flag"></i>
+    </span>
+    <span class="text">Create Team</span>
+</a>

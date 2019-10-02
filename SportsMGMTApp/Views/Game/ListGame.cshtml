@@ -1,0 +1,100 @@
+﻿@model List<SportsMGMTCommon.Game>
+
+@{ 
+    ViewBag.Titlr = "View Games";
+    var user = Session["Users"] as SportsMGMTCommon.Users;
+}
+
+
+<h2>View Games</h2>
+
+@{ if (user.RoleID == 1) {
+<a href=@Url.Action("Game", "Game") class="btn btn-primary btn-icon-split">
+    <span class="icon text-white-50">
+        <i class="fas fa-flag"></i>
+    </span>
+    <span class="text">InsertGame</span>
+</a>
+    }
+    else
+    {
+
+    }
+    }
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">All Games</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>
+                            Start-Time
+                        </th>
+                        <th>
+                            End-Time
+                        </th>
+                        <th>
+                            Home Team
+                        </th>
+                        <th>Away Team</th>
+                        <th>Home Team Score</th>
+                        <th>Away Team Score</th>
+                        @if (user.RoleID==1)
+                        {
+                        <th>Update/Delete</th>
+                        }
+                        else
+                        {
+
+                        }
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.StartTime)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.EndTime)
+                            </td>
+                            <td>
+                                @Html.FormatValue(item.HomeTeam, SportsMGMTApp.Models.GameModel.GetTeamNameString(item.HomeTeam))
+                            </td>
+                            <td>
+                                @Html.FormatValue(item.AwayTeam, SportsMGMTApp.Models.GameModel.GetTeamNameString(item.AwayTeam))
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.HomeTeamScore)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.AwayTeamScore)
+                            </td>
+                            @{ 
+                                if (user.RoleID == 1)
+                                {
+                            <td>
+                                @Html.ActionLink("Edit", "UpdateGame", new { id = item.GameID }) |
+                                @Html.ActionLink("Delete", "DeleteGame", new { id = item.GameID })
+                            </td>
+                                }
+                                else
+                                {
+
+                                }
+                                }
+                            <td>
+                                @Html.HiddenFor(modelItem => item.GameID)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

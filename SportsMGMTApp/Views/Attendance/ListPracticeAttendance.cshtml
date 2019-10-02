@@ -1,0 +1,52 @@
+﻿@model List<SportsMGMTCommon.PracticeAttended>
+
+@{
+    
+}
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">View All Attendance</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>
+                            Practice Type
+                        </th>
+                        <th>
+                            Teammate Name
+                        </th>
+                        <th>
+                            Did Attend?
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                    <tr>
+                        <td>
+                            @Html.FormatValue(item.PracticeID,SportsMGMTApp.Models.PracticeAttendanceModel.FormatPracticeID(item.PracticeID))
+                        </td>
+                        <td>
+                            @Html.FormatValue(item.UserID,SportsMGMTApp.Models.PracticeAttendanceModel.GetUserName(item.UserID))
+                        </td>
+                        <td>
+                            @Html.FormatValue(item.Attended,SportsMGMTApp.Models.PracticeAttendanceModel.FormatBool(item.Attended))
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+ 
+        <a href=@Url.Action("ListAttendance", "Attendance") class="btn btn-primary btn-icon-split">
+    <span class="icon text-white-50">
+        <i class="fas fa-flag"></i>
+    </span>
+    <span class="text">Create New</span>
+</a>

@@ -1,0 +1,76 @@
+﻿@model List<SportsMGMTCommon.Game>
+
+@{
+
+}
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Create Game Attendance</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>     
+                        <tr>
+                            <th>
+                                Game
+                            </th>
+                            <th>
+                               Start-Time
+                            </th>
+                            <th>
+                             End-Time
+                            </th>
+                            <th>
+                                Home Team
+                            </th>
+                            <th>
+                                Away Team
+                            </th>
+                            <th>
+                               Home Team Score
+                            </th>
+                            <th>
+                              Away Team Score
+                            </th>
+                            <th> Create New Attendnace</th>
+                        </tr>
+                        </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.FormatValue(item.GameID,SportsMGMTApp.Models.GameAttendanceModel.FormatGameIDs(item.GameID))
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.StartTime)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.EndTime)
+                                </td>
+                                <td>
+                                    @Html.FormatValue(item.HomeTeam,SportsMGMTApp.Models.GameModel.GetTeamNameString(item.HomeTeam))
+                                </td>
+                                <td>
+                                    @Html.FormatValue(item.AwayTeam,SportsMGMTApp.Models.GameModel.GetTeamNameString(item.AwayTeam))
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.HomeTeamScore)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.AwayTeamScore)
+                                </td>
+                                <td>
+                                    @*@Html.ActionLink("Create New Attendance", "CreateGameAttendance", new { id = item.GameID }) |*@
+                                    @Html.ActionLink("Add Stat", "CreatePlayerStats", new { Controller = "Stats", Action = "CreatePlayerStats", id = item.GameID })
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+

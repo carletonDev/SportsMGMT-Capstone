@@ -1,0 +1,224 @@
+﻿
+@{
+    var stats = Session["stats"] as SportsMGMTApp.Models.StatsModel;
+    var user = Session["Users"] as SportsMGMTCommon.Users;
+}
+<h1 class="h3 mb-2 text-gray-800">Charts</h1>
+<p class="mb-4"> Data Visualizations for Team @SportsMGMTApp.Models.GameModel.GetTeamNameString(user.TeamID)</p>
+
+<!-- Content Row -->
+<div class="row">
+
+    <div class="col-xl-8 col-lg-7">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Absent Chart</h6>
+            </div>
+            <div class="card-body">
+                <div class="chart">
+                    <canvas id="Attendance"></canvas>
+                </div>
+                <hr>
+            </div>
+        </div>
+
+        <!-- Bar Chart -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Game Stats Chart</h6>
+            </div>
+            <div class="card-body">
+                <div class="chart">
+                    <canvas id="PPG"></canvas>
+                </div>
+                <hr>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-xl-4 col-lg-5">
+        <div class="card shadow mb-4">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Pie Chart Points</h6>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body">               
+                    <canvas id="PieChartPoints" width="75" height="75"></canvas>
+            </div>
+        </div>
+  
+    @*<div class="col-xl-4 col-lg-5">
+        <div class="card shadow mb-4">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Pie Chart Assists</h6>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body">
+                <div class="chart">
+                    <canvas id="PieChartAssists"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>*@
+    </div>
+</div>
+<div class="col-xl-4 col-lg-5">
+    <div class="card shadow mb-4">
+        <!-- Card Header - Dropdown -->
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Pie Chart Rebounds</h6>
+        </div>
+        <!-- Card Body -->
+        <div class="card-body">
+                <canvas id="PieChartRebounds" width="75" height="75"></canvas>
+            <hr>
+        </div>
+    </div>
+
+
+<script>
+    var ctx = document.getElementById("PPG");
+    var attendance = document.getElementById("Attendance");
+    var pointsPie = document.getElementById("PieChartPoints");
+    var assistsPie = document.getElementById("PieChartAssists");
+    var reboundsPie = document.getElementById("PieChartRebounds");
+    //create a mixed line bar chart that displays averages with bars to see players stats against benchmark average
+     var line=  new Chart(ctx, {
+         type: 'bar',
+         responsive: true,
+    data: {
+      labels: @Html.Raw(Json.Encode(stats.onlyPlayers)),
+      datasets: [
+        {
+          label: "Points",
+          type:"bar",
+          backgroundColor: @Html.Raw(Json.Encode(stats.ColorRandom[0])),
+          data: @Html.Raw(Json.Encode(stats.Points))
+        },{
+            label: "Assists",
+            type:"bar",
+            backgroundColor: @Html.Raw(Json.Encode(stats.ColorRandom[2])),
+            data: @Html.Raw(Json.Encode(stats.Assists))
+        },{
+            label: "Rebounds",
+            type:"bar",
+            backgroundColor: @Html.Raw(Json.Encode(stats.ColorRandom[1])),
+            data: @Html.Raw(Json.Encode(stats.Rebounds))
+        },{
+            label: "Misses",
+            type:"bar",
+            backgroundColor: @Html.Raw(Json.Encode(stats.ColorRandom[3])),
+            data: @Html.Raw(Json.Encode(stats.Misses))
+        },{
+          label: "Points Average",
+          type: "line",
+          borderColor: @Html.Raw(Json.Encode(stats.ColorRandom[0])),
+          data: @Html.Raw(Json.Encode(stats.GamePointAverage)),
+          fill: false
+       },{
+          label: "Rebound Average",
+          type: "line",
+          borderColor: @Html.Raw(Json.Encode(stats.ColorRandom[1])),
+          data: @Html.Raw(Json.Encode(stats.GameReboundAverage)),
+          fill: false
+        },{
+          label: "Assists Average",
+          type: "line",
+          borderColor: @Html.Raw(Json.Encode(stats.ColorRandom[2])),
+          data: @Html.Raw(Json.Encode(stats.GameAssistsAverage)),
+          fill: false
+        },{
+          label: "Misses Average",
+          type: "line",
+          borderColor: @Html.Raw(Json.Encode(stats.ColorRandom[3])),
+          data: @Html.Raw(Json.Encode(stats.GameMissAverage)),
+          fill: false
+        }
+
+      ]
+    },
+    options: {
+      title: {
+        display: true,
+        text: 'Players Total Stats Across all Games'
+      }
+    }
+     });
+    //create line chart for  attendance with 2 average lines for misses and being present
+  var lineBar = new Chart(attendance, {
+      type: 'line',
+  data: {
+    labels: @Html.Raw(Json.Encode(stats.xValue)),
+    datasets: [{
+        data: @Html.Raw(Json.Encode(stats.Present)),
+        label: "Present",
+        borderColor: @Html.Raw(Json.Encode(stats.ColorRandom[3])),
+        fill: false
+      }, {
+        data: @Html.Raw(Json.Encode(stats.Absent)),
+        label: "Absent",
+        borderColor: @Html.Raw(Json.Encode(stats.ColorRandom[4])),
+        fill: false
+      }, {
+        data: @Html.Raw(Json.Encode(stats.AverageAbsent)),
+        label: "Average Absent",
+        borderColor: @Html.Raw(Json.Encode(stats.ColorRandom[4])),
+        fill: false
+      }, {
+        data: @Html.Raw(Json.Encode(stats.Average)),
+        label: "Average Present",
+        borderColor: @Html.Raw(Json.Encode(stats.ColorRandom[3])),
+        fill: false
+      }
+    ]
+  },
+  options: {
+    title: {
+      display: true,
+      text: 'Attendance graph for @SportsMGMTApp.Models.GameModel.GetTeamNameString(user.TeamID)'
+    }
+  }
+  });
+    //ToDO: Pie chart for some stats
+    var Pie = new Chart(pointsPie, {
+        type: 'pie',
+        responsive: true,
+    data: {
+      labels: @Html.Raw(Json.Encode(stats.onlyPlayers)),
+      datasets: [{
+        label: "Points",
+        backgroundColor: @Html.Raw(Json.Encode(stats.ColorRandom)),
+        data: @Html.Raw(Json.Encode(stats.PiePoints))
+      }]
+    },
+    options: {
+      title: {
+        display: true,
+        text: 'Point Distribution'
+      }
+    }
+    });
+
+
+    //ToDO: Pie chart for some stats
+    var PieRebounds = new Chart(reboundsPie, {
+        type: 'pie',
+        responsive:true,
+    data: {
+      labels: @Html.Raw(Json.Encode(stats.onlyPlayers)),
+      datasets: [{
+        label: "Points",
+        backgroundColor: @Html.Raw(Json.Encode(stats.ColorRandom)),
+        data: @Html.Raw(Json.Encode(stats.PieRebounds))
+      }]
+    },
+    options: {
+      title: {
+        display: true,
+        text: 'Rebounds Distribution'
+      }
+    }
+    });
+</script>

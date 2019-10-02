@@ -1,0 +1,50 @@
+﻿@model SportsMGMTApp.Models.UserModel
+
+@{
+
+}
+
+@using (Html.BeginForm("DeleteUser", "User"))
+{   @Html.HiddenFor(model=>model.user.UserID)
+    <body>
+        @{
+
+            if (ViewBag.Message == "Delete Successful")
+            {
+                //display red message if exception thrown
+                <div class="alert alert-success" role="alert">
+                    @ViewBag.Message
+                </div>
+            }
+            else if (ViewBag.Message == "Delete Failed")
+            {
+                //display red message if exception thrown
+                <div class="alert alert-danger" role="alert">
+                    @ViewBag.Message
+                </div>
+            }
+        }
+        <!-- Create a Form that Deletes Selected User-->
+        <div class="container">
+            <div class="form-group">
+                <label for="lastname">FullName</label>
+                @Html.EditorFor(model => model.user.FullName, new { htmlattributes = new { @class = "form-control", @placeholder = "Last Name" } })
+                @Html.ValidationMessageFor(model => model.user.FullName, "", new { @class = "text-danger" })
+
+            </div>
+            <div class="form-group">
+                <label for="InputEmail">Email address</label>
+                @Html.EditorFor(model => model.user.Email, new { htmlattributes = new { @class = "form-control", @placeholder = "E-mail" } })
+                @Html.ValidationMessageFor(model => model.user.Email, "", new { @class = "text-danger" })
+                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            </div>
+            <div class="form-group">
+                <label for="dob">Phone</label>
+                @Html.EditorFor(model => model.user.Phone, new { htmlattributes = new { @class = "form-control", @placeholder = "Phone" } })
+                @Html.ValidationMessageFor(model => model.user.Phone, "", new { @class = "text-danger" })
+            </div>
+            <button type="submit" onclick="return confirm('Delete User?')" class="btn btn-primary">Delete</button>
+        </div>
+    </body>
+}
+

@@ -1,0 +1,70 @@
+﻿@model SportsMGMTApp.Models.UserRegister
+
+@{
+}
+
+@using (Html.BeginForm("MyProfile", "User"))
+{   @Html.HiddenFor(model=>model.UserID)
+    <body>
+        @{
+
+            if (ViewBag.Message == "Update Success")
+            {
+                //display red message if exception thrown
+                <div class="alert alert-success" role="alert">
+                    @ViewBag.Message
+                </div>
+            }
+            else if (ViewBag.Message == "Update Failed")
+            {
+                //display red message if exception thrown
+                <div class="alert alert-danger" role="alert">
+                    @ViewBag.Message
+                </div>
+            }
+        }
+        <!-- Create a Form that gets the Values for a User in the database, and has a submit and clear buttons-->
+        <div class="container">
+            <div class="form-group">
+                <label for="firstname">First Name</label>
+                @Html.EditorFor(model => model.FirstName, new { htmlattributes = new { @class = "form-control", @placeholder = "First Name" } })
+                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                <label for="lastname">Last Name</label>
+                @Html.EditorFor(model => model.LastName, new { htmlattributes = new { @class = "form-control", @placeholder = "Last Name" } })
+                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+
+            </div>
+            <div class="form-group">
+                <label for="dob">Address</label>
+                @Html.EditorFor(model => model.Address, new { htmlattributes = new { @class = "form-control", @placeholder = "Address" } })
+                @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+
+            </div>
+            <div class="form-group">
+                <label for="InputEmail">Email address</label>
+                @Html.EditorFor(model => model.Email, new { htmlattributes = new { @class = "form-control", @placeholder = "E-mail" } })
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            </div>
+            <div class="form-group">
+                <label for="dob">Phone</label>
+                @Html.EditorFor(model => model.Phone, new { htmlattributes = new { @class = "form-control", @placeholder = "Phone" } })
+                @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                <label for="UserName">UserName</label>
+                @Html.EditorFor(model => model.UserName, new { htmlattributes = new { @class = "form-control", @placeholder = "UserName" } })
+                @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                <label for="InputPassword">Password</label>
+                @Html.EditorFor(model => model.Password, new { htmlattributes = new { @input = "password", @class = "form-control", @placeholder = "Password" } })
+                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="reset" class="btn btn-primary">Clear</button>
+        </div>
+    </body>
+}

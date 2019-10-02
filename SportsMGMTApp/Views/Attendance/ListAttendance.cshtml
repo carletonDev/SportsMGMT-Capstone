@@ -1,0 +1,50 @@
+﻿@model List<SportsMGMTCommon.Practice>
+
+@{
+    ViewBag.Title = "Practice Attendance";
+}
+
+
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Create Practice Attendance</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>
+                            Practice Type
+                        </th>
+                        <th>
+                            Start-Time
+                        </th>
+                        <th>
+                            End-Time
+                        </th>
+                        <th>Create Attendance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PracticeType)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.StartTime)
+                            </td>
+                            <td>@Html.DisplayFor(modelItem=>item.EndTime)</td>
+                            <td>
+                                @Html.ActionLink("Create Attendance", "CreatePracticeAttendance", new { id = item.PracticeID })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

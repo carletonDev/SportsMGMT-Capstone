@@ -1,0 +1,83 @@
+﻿@model List<SportsMGMTCommon.PlayerStats>
+
+@{
+    var users = Session["Users"] as SportsMGMTCommon.Users;
+}
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Stat Table</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+
+                            <th>
+                                Player Name
+                            </th>
+                            <th>
+                               Game
+                            </th>
+                            <th>
+                                Team
+                            </th>
+                            <th>
+                                Points
+                            </th>
+                            <th>
+                               Assists
+                            </th>
+                            <th>
+                              Rebounds
+                            </th>
+                            <th>
+                               Misses
+                            </th>
+                            @{ if (users.RoleID == 1 || users.RoleID == 2) {
+                            <th> Update Stat</th>
+                                }
+                                else { }
+                                }
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.FormatValue(item.UserID, SportsMGMTApp.Models.UserModel.WhoModified(item.UserID))
+                                </td>
+                                <td>
+                                    @Html.FormatValue(item.GameID, SportsMGMTApp.Models.GameAttendanceModel.FormatGameIDs(item.GameID))
+                                </td>
+                                <td>
+                                    @Html.FormatValue(item.TeamID, SportsMGMTApp.Models.GameModel.GetTeamNameString(item.TeamID))
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Points)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Assists)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Rebounds)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Misses)
+                                </td>
+                                @{ if (users.RoleID == 1 || users.RoleID == 2)
+                                    {
+                                <td>
+                                    @Html.ActionLink("Edit", "UpdatePlayerStats", new { id = item.StatID })
+                                </td>
+                                    }
+                                    else { }
+                                    }
+                            </tr>
+                        }
+                      </tbody>
+                </table>
+            </div>
+        </div>
+    </div>

@@ -1,0 +1,167 @@
+﻿@model SportsMGMTApp.Models.UserModel
+
+@{
+    var users = Session["Users"] as SportsMGMTCommon.Users;
+}
+
+
+<title>AssignContract</title>
+
+@{
+    if (ViewBag.Message == "Update Successful")
+    {
+        //display red message if successful
+        <div class="alert alert-success" role="alert">
+            @ViewBag.Message
+        </div>
+    }
+    else if (ViewBag.Message == "Update Failed")
+    {
+        //display red message if exception thrown
+        <div class="alert alert-danger" role="alert">
+            @ViewBag.Message
+        </div>
+    }
+    else if (ViewBag.Message == "Invalid Data Entry")
+    {
+        //display red message if exception thrown
+        <div class="alert alert-danger" role="alert">
+            @ViewBag.Message
+        </div>
+    }
+    else if (ViewBag.Message == "You have already updated the user with these values")
+    {
+        //display red message if exception thrown
+        <div class="alert alert-danger" role="alert">
+            @ViewBag.Message
+        </div>
+    }
+    else
+    {
+
+    }
+}
+ 
+<h1>Update User </h1>
+@using (Html.BeginForm())
+{
+    <div class="container-fluid">
+        @Html.HiddenFor(model => model.user.UserID, new { htmlAttributes = new { @class = "form-control" } })
+        @{ if (users.RoleID != 1)
+            {
+                @Html.HiddenFor(model => model.user.TeamID, new { htmlAttributes = new { @class = "form-control" } })
+            }
+            else
+            {
+                <div class="form-group">
+                   Team
+                    <div class="col-md-10">
+                        @Html.DropDownListFor(model => model.TeamID, Model.GetTeams, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.TeamID, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            }
+        }
+        @Html.HiddenFor(model => model.user.UserName, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.HiddenFor(model => model.user.Password, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @{ if (users.RoleID == 1)
+            {
+                <div class="form-group">
+                  Role
+                    <div class="col-md-10">
+                        @Html.DropDownListFor(model => model.user.RoleID, Model.GetRoles, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.user.RoleID, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ChangePassword, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.CheckBoxFor(model => model.ChangePassword, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.user.RoleID, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+            }
+            else
+            {
+                @Html.HiddenFor(model => model.user.RoleID, new { htmlAttributes = new { @class = "form-control" } })
+            }
+
+        }
+        <div class="form-group">
+           Contract
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.user.ContractID, Model.GetContract, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.user.ContractID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.user.FullName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.user.FullName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.user.FullName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.user.Address, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.user.Address, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.user.Address, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.user.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.user.Email, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.user.Email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.user.Phone, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.user.Phone, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.user.Phone, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.user.InjuryStatus, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.user.InjuryStatus)
+                    @Html.ValidationMessageFor(model => model.user.InjuryStatus, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.user.InjuryDescription, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.user.InjuryDescription, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.user.InjuryDescription, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.user.ContractDuration, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.user.ContractDuration, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.user.ContractDuration, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.user.ContractStart, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.user.ContractStart, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.user.ContractStart, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+}
+

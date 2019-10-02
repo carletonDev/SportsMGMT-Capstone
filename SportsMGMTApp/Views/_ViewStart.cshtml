@@ -1,0 +1,25 @@
+﻿@{
+
+    string _userRole = Session["Roles"] as string;
+
+
+    if (_userRole == "Admin")
+    {
+        Layout = "~/Views/Shared/AdminLayout.cshtml";
+    }
+    else if (_userRole == "Coach")
+    {
+        Layout = "~/Views/Shared/CoachLayout.cshtml";
+    }
+    else if (_userRole == "Player")
+    {
+        Layout = "~/Views/Shared/PlayerLayout.cshtml";
+    }
+    else
+    {
+        // anonymous
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+
+
+}

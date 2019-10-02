@@ -1,0 +1,102 @@
+﻿@model SportsMGMTApp.Models.PlayerStatsModel
+
+@{
+    if (ViewBag.Message == "Update Successful")
+    {
+        <div class="alert alert-success" role="alert">
+            @ViewBag.Message
+        </div>
+    }
+    else if (ViewBag.Message == "Update Failed")
+    {
+        <div class="alert alert-danger" role="alert">
+            @ViewBag.Message
+        </div>
+    }
+    else if (ViewBag.Message == "Invalid Entry")
+    {
+        <div class="alert alert-danger" role="alert">
+            @ViewBag.Message
+        </div>
+    }
+    else
+    {
+
+    }
+
+}
+
+<a href=@Url.Action("StatTable", "Stats") class="btn btn-primary btn-icon-split">
+    <span class="icon text-white-50">
+        <i class="fas fa-flag"></i>
+    </span>
+    <span class="text">Back to List</span>
+</a>
+
+@using (Html.BeginForm())
+{
+
+    <h4>PlayerStatsUpdate</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+<div class="form-group">
+    @Html.HiddenFor(model => model.StatID, htmlAttributes: new { @class = "control-label col-md-2" })
+    @Html.HiddenFor(model => model.GameID, htmlAttributes: new { @class = "control-label col-md-2" })
+    @Html.HiddenFor(model => model.UserID, htmlAttributes: new { @class = "control-label col-md-2" })
+</div>
+
+    <div class="form-group">
+       Player
+        <div class="col-md-10">
+            @Html.FormatValue(Model.UserID, SportsMGMTApp.Models.UserModel.WhoModified(Model.UserID))
+            @Html.ValidationMessageFor(model => model.UserID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        Game
+        <div class="col-md-10">
+            @Html.FormatValue(Model.GameID, SportsMGMTApp.Models.GameAttendanceModel.FormatGameIDs(Model.GameID))
+            @Html.ValidationMessageFor(model => model.GameID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Points, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Points, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Points, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Assists, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Assists, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Assists, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Rebounds, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Rebounds, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Rebounds, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Misses, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Misses, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Misses, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-primary" />
+        </div>
+    </div>
+}

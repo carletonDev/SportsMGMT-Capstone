@@ -1,0 +1,85 @@
+﻿@model SportsMGMTApp.Models.GameModel
+
+@{
+    ViewBag.Title = "UpdateGame";
+}
+@{
+
+    if (ViewBag.Message == "Update Successful")
+    {
+        //display red message if exception thrown
+        <div class="alert alert-success" role="alert">
+            @ViewBag.Message
+        </div>
+    }
+    else if(ViewBag.Message=="Update Failed!")
+    {
+        //display red message if exception thrown
+        <div class="alert alert-danger" role="alert">
+            @ViewBag.Message
+        </div>
+    }
+}
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <h4>Game Update</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" }) 
+        @Html.HiddenFor(model =>model.game.GameID)
+    <div class="form-group">
+        @Html.LabelFor(model => model.game.StartTime, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.game.StartTime, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.game.StartTime, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.game.EndTime, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.game.EndTime, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.game.EndTime, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.game.HomeTeam, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(m => m.game.HomeTeam, Model.GetTeam, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.HomeTeam, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.game.AwayTeam, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(m => m.game.AwayTeam, Model.GetTeam, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.AwayTeam, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.game.HomeTeamScore, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.game.HomeTeamScore, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.game.HomeTeamScore, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.game.AwayTeamScore, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.game.AwayTeamScore, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.game.AwayTeamScore, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Update</button>
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "ListGame")
+</div>

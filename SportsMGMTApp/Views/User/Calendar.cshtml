@@ -1,0 +1,42 @@
+﻿@{
+    ViewBag.Title = "ViewCalendar";
+    var user = Session["Users"] as SportsMGMTCommon.Users;
+}
+
+<h2>@Session["FullName"] Schedule</h2>
+<div class="scheduler_container">
+    @Html.Raw(Model.Render())
+</div>
+@{ if (user.RoleID == 1 || user.RoleID == 2) {
+<a href=@Url.Action("AddPractice", "Practice") class="btn btn-primary btn-icon-split">
+    <span class="icon text-white-50">
+        <i class="fas fa-flag"></i>
+    </span>
+    <span class="text">Add Practice</span>
+</a>
+    }
+    else
+    {
+
+    }
+    }
+@{ if (user.RoleID == 1)
+    {
+<a href=@Url.Action("Game", "Game") class="btn btn-primary btn-icon-split">
+<span class="icon text-white-50">
+    <i class="fas fa-flag"></i>
+</span>
+<span class="text">Add Game</span>
+</a>
+    }
+    else
+    {
+
+    }
+    }
+
+
+
+
+
+

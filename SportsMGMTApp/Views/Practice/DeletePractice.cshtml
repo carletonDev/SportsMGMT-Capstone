@@ -1,0 +1,68 @@
+﻿@model SportsMGMTApp.Models.PracticeModel
+
+@{
+    ViewBag.Title = "DeletePractice";
+}
+
+<h2>DeletePractice</h2>
+<br />
+<a href=@Url.Action("ListPractice","Practice") class="btn btn-primary btn-icon-split">
+    <span class="icon text-white-50">
+        <i class="fas fa-flag"></i>
+    </span>
+    <span class="text">Back to List</span>
+    </a>
+        @{
+            if (ViewBag.Message == "Delete Successful")
+            {
+                //display success message in green boarder
+                <div class="alert alert-success" role="alert">
+                    @ViewBag.Message
+                </div>
+            }
+            else if (ViewBag.Message == "Delete Failed")
+            {
+                //display red message if exception thrown
+                <div class="alert alert-danger" role="alert">
+                    @ViewBag.Message
+                </div>
+            }
+            else
+            {
+
+            }
+
+        }
+        @using (Html.BeginForm())
+        {
+
+            <div class="container-fluid">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.practice.PracticeID)
+                <div class="form-group">
+                    @Html.LabelFor(model => model.practice.StartTime, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DisplayFor(model => model.practice.StartTime, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.practice.StartTime, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.practice.EndTime, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DisplayFor(model => model.practice.EndTime, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.practice.EndTime, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.practice.PracticeType, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DisplayFor(model => model.practice.PracticeType, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.practice.PracticeType, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" onclick="return confirm('Delete Practice?')" class="btn btn-primary">Delete</button>
+                    </div>
+                </div>
+        }
+
