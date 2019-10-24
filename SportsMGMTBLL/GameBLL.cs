@@ -23,21 +23,6 @@ namespace SportsMGMTBLL
             GameDataAccess gameDataAccess = new GameDataAccess();
             gameDataAccess.CreateGame(game);
         }
-        public bool UpdateGameScore(Game game)
-        {
-            try
-            {
-                GameDataAccess gameDataAccess = new GameDataAccess();
-                gameDataAccess.UpdateGameScore(game);
-            }
-            catch(Exception ex)
-            {
-                ExeceptionDataAccess ExceptionDA = new ExeceptionDataAccess();
-                ExceptionDA.StoreExceptions(ex);
-                return false;
-            }
-            return true;
-        }
         public void DeleteGame(Game game)
         {
             GameDataAccess gameDataAccess = new GameDataAccess();

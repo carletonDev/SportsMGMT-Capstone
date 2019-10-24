@@ -38,11 +38,6 @@ namespace SportsMGMTBLL
             teamData.DeleteTeam(team);
         }
 
-        public decimal CapSpace(Team team)
-        {
-            TeamDataAccess teamData = new TeamDataAccess();
-            return teamData.GetTeamSalaryCapRemaining(team);
 
-        }
     }
 }

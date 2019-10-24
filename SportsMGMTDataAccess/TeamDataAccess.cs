@@ -2,15 +2,15 @@
 
 namespace SportsMGMTDataAccess
 { //CRUD Teams Data Access
+    using Interfaces.IDataAccess;
     using SportsMGMTCommon;
     using System;
     using System.Collections.Generic;
     using System.Configuration;
     using System.Data;
     using System.Data.SqlClient;
-    public class TeamDataAccess
+    public class TeamDataAccess:ITeamDataAccess
     {
-        //string Connection = "Data Source=DESKTOP-H52G7QL\\SQLEXPRESS;Itnitial Catalog=SportsMGMT-capstone;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         public string Connection = ConfigurationManager.ConnectionStrings["Sports"].ConnectionString;
         //Uses the stored procedure Get teams to get the current Teams stored in the database
         public List<Team> GetTeams()
@@ -33,7 +33,7 @@ namespace SportsMGMTDataAccess
                             while (reader.Read())
                             {
                                 Team team = new Team();
-                                if (reader["TeamID"] != DBNull.Value)
+                                if (reader["teamID"] != DBNull.Value)
                                 {
                                     team.TeamID = (int)reader["teamID"];
                                 }
@@ -149,38 +149,6 @@ namespace SportsMGMTDataAccess
             }
         }
         //Check Teams Salary Cap Remaining
-        public decimal GetTeamSalaryCapRemaining(Team team)
-        {
-           
-            try
-            {
-                using (SqlConnection con = new SqlConnection(Connection))
-                {
-                    using (SqlCommand command = new SqlCommand("sp_GetSalaryRemaining", con))
-                    {
-                        command.CommandType = CommandType.StoredProcedure;
-                        command.CommandTimeout = 10;
-                        command.Parameters.AddWithValue("@name",team.TeamName);
-                        con.Open();
 
-                        using (SqlDataReader reader = command.ExecuteReader())
-                        {
-                            //for single reader read
-                            if (reader.Read())
-                            {
-                                team.SalaryCap = (decimal)reader["CapSpace"];
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                ExeceptionDataAccess exception = new ExeceptionDataAccess();
-                exception.StoreExceptions(ex);
-            }
-            //set it to temporary salary cap to store the value
-            return team.SalaryCap;
-        }
     }
 }

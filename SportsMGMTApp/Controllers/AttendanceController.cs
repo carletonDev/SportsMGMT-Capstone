@@ -9,6 +9,7 @@ namespace SportsMGMTApp.Controllers
     using SportsMGMTCommon;
     public class AttendanceController : Controller
     {
+
         // GET: Attendance
         [HttpGet]
         [MustBeInRole(Roles="Coach,Admin")]

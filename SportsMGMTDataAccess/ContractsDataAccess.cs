@@ -2,6 +2,7 @@
 
 namespace SportsMGMTDataAccess
 {
+    using Interfaces.IDataAccess;
     using SportsMGMTCommon;
     using System;
     using System.Collections.Generic;
@@ -9,10 +10,9 @@ namespace SportsMGMTDataAccess
     using System.Data;
     using System.Data.SqlClient;
     //creates the connection for contracts  to CRUD
-    public class ContractsDataAccess
+    public class ContractsDataAccess:IContractsDataAccess
     {
         public string Connection = ConfigurationManager.ConnectionStrings["Sports"].ConnectionString;
-        //string Connection = "Data Source=DESKTOP-H52G7QL\\SQLEXPRESS;Itnitial Catalog=SportsMGMT-capstone;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         //Store all contracts in the database in a list
         public List<Contracts> GetContracts()
         {

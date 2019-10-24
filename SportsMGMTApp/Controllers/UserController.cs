@@ -18,6 +18,8 @@ namespace SportsMGMTApp.Controllers
     /// </summary>
     public class UserController : Controller
     {
+        //inject interfaces into controller here
+
         //CRUD for user as well as sending Emails More detailed comments in method
         /// <summary>
         /// The GET for the User Register view 

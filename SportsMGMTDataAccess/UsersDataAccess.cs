@@ -1,12 +1,13 @@
 ﻿namespace SportsMGMTDataAccess
 {
+    using Interfaces.IDataAccess;
     using SportsMGMTCommon;
     using System;
     using System.Collections.Generic;
     using System.Configuration;
     using System.Data;
     using System.Data.SqlClient;
-    public class UsersDataAccess
+    public class UsersDataAccess:IUsersDataAcesss
     {//CRUD users Data Access
 
         public string Connection = ConfigurationManager.ConnectionStrings["Sports"].ConnectionString;
@@ -220,131 +221,6 @@
                 exception.StoreExceptions(ex);
             }
             return users;
-        }
-
-        public List<Users>ViewUsersOnTeam(int id)
-        {
-            List<Users> getUsers = new List<Users>();
-            try
-            {
-                using (SqlConnection con = new SqlConnection(Connection))
-                {
-                    using (SqlCommand command = new SqlCommand("sp_ViewMyTeam", con))
-                    {
-                        command.CommandType = CommandType.StoredProcedure;
-                        command.Parameters.AddWithValue("@id", id);
-                        command.CommandTimeout = 10;
-                        con.Open();
-
-                        using (SqlDataReader reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                //Add to objects send to list
-                                Users users = new Users();
-                                users.FullName = (string)reader["full_name"];
-                                if (reader["email"] != null)
-                                {
-                                    users.Email = (string)reader["email"];
-                                }
-                                if (reader["phone"] != null)
-                                {
-                                    users.Phone = (string)reader["phone"];
-                                }
-                                
-                                if (reader["injury_status"] != null)
-                                {
-                                    users.InjuryStatus = (bool)reader["injury_status"];
-                                }
-                                if (reader["injurydesc"] != null)
-                                {
-                                    users.InjuryDescription = (string)reader["injurydesc"];
-                                }
-                                getUsers.Add(users);
-                            }
-                        }
-                    }
-
-                }
-            }
-            catch (Exception ex)
-            {
-                ExeceptionDataAccess exception = new ExeceptionDataAccess();
-                exception.StoreExceptions(ex);
-            }
-            return getUsers;
-
-        }
-
-        //Method that views null contracts
-        public List<Users> ViewNullContracts()
-        {
-            List<Users> getUsers = new List<Users>();
-            try
-            {
-                using (SqlConnection con = new SqlConnection(Connection))
-                {
-                    using (SqlCommand command = new SqlCommand("sp_ViewNullContracts", con))
-                    {
-                        command.CommandType = CommandType.StoredProcedure;
-                        command.CommandTimeout = 10;
-                        con.Open();
-
-                        using (SqlDataReader reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                //create a User object
-                                Users users = new Users();
-                                users.FullName = (string)reader["full_name"];
-                                users.Address = (string)reader["address"];
-                                users.Email = (string)reader["email"];
-                                users.Phone = (string)reader["phone"];
-
-                                //set contract ID to Null Value
-                                users.ContractID = 0;
-                     
-                                getUsers.Add(users);
-                            }
-
-                        }
-                    }
-                }
-
-            }
-            catch (Exception ex)
-            {
-                ExeceptionDataAccess exception = new ExeceptionDataAccess();
-                exception.StoreExceptions(ex);
-            }
-            return getUsers;
-        }
-        //Method that Updates Players Without Contracts
-        public bool AssignContracts(Users user)
-        {
-            try
-            {
-                using (SqlConnection con = new SqlConnection(Connection))
-                {
-                    using (SqlCommand command = new SqlCommand("sp_UpdatePlayersWithoutContracts", con))
-                    {
-                        command.CommandType = CommandType.StoredProcedure;
-                        command.CommandTimeout = 10;
-                        command.Parameters.AddWithValue("@id", user.ContractID);
-                        command.Parameters.AddWithValue("@name", user.FullName);
-                        con.Open();
-                        command.ExecuteNonQuery();
-                    }
-                }
-            }
-            catch(Exception ex)
-            {
-                ExeceptionDataAccess exception = new ExeceptionDataAccess();
-                exception.StoreExceptions(ex);
-                return false;
-      
-            }
-            return true;
         }
         //Method that Updates allfields
         public bool UpdateUser(Users user)

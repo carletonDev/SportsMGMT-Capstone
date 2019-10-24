@@ -9,22 +9,7 @@
     using SportsMGMTDataAccess;
     public class AttendanceBLL
     {
-        //Get the List of Users Who Have Either Attended or havent attended games
-        public List<Users> getGameAttendance(GameAttendance gameAttendance)
-        {
-            AttendanceDataAccess attendanceDataAccess = new AttendanceDataAccess();
-            List<Users> getGameAttendance = attendanceDataAccess.getGameAttendance(gameAttendance);
-            return getGameAttendance;
 
-        }
-        //Gets the list of users who have attended or havent attended practice
-        public List<Users> getPracticeAttendance(PracticeAttended practiceAttendance)
-        {
-            AttendanceDataAccess attendanceDataAccess = new AttendanceDataAccess();
-            List<Users> getPracticeAttendance = attendanceDataAccess.getPracticeAttendance(practiceAttendance);
-            return getPracticeAttendance;
-
-        }
         //Inserts a new Game Attendance
         public void CreateGameAttance(GameAttendance gameAttended)
         {

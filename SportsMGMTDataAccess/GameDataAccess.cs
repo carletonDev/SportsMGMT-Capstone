@@ -7,12 +7,12 @@ namespace SportsMGMTDataAccess
     using System.Configuration;
     using System.Data;
     using System.Data.SqlClient;
+    using Interfaces.IDataAccess;
     using SportsMGMTCommon;
 
     //connection to CRUD games
-    public class GameDataAccess
+    public class GameDataAccess:IGameDataAccess
     {
-        //string Connection = "Data Source=DESKTOP-H52G7QL\\SQLEXPRESS;Itnitial Catalog=SportsMGMT-capstone;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         public string Connection = ConfigurationManager.ConnectionStrings["Sports"].ConnectionString;
         //Read Games
         public List<Game>GetGames()
@@ -50,7 +50,7 @@ namespace SportsMGMTDataAccess
                                 }
                                 if (reader["awayteam_fk"] != DBNull.Value)
                                 {
-                                    game.AwayTeam = (int)reader["awayteam_fk"];
+                                    game.AwayTeam = (int)reader["awayteam_sk"];
                                 }
                                 if (reader["hometeam_score"] != DBNull.Value)
                                 {

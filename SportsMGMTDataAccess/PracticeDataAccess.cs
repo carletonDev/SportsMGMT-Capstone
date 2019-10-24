@@ -2,6 +2,7 @@
 
 namespace SportsMGMTDataAccess
 {
+    using Interfaces.IDataAccess;
     using SportsMGMTCommon;
     using System;
     using System.Collections.Generic;
@@ -9,9 +10,8 @@ namespace SportsMGMTDataAccess
     using System.Data;
     using System.Data.SqlClient;
     //Establishes connection for CRUD Practice Objects
-    public class PracticeDataAccess
+    public class PracticeDataAccess : IPracticeDataAccess
     {
-        //string Connection = "Data Source=DESKTOP-H52G7QL\\SQLEXPRESS;Itnitial Catalog=SportsMGMT-capstone;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         public string Connection = ConfigurationManager.ConnectionStrings["Sports"].ConnectionString;
         //Get a List of Practices
         public List<Practice>GetPractice()

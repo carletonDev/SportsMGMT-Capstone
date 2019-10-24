@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SportsMGMTBLL", "SportsMGMT
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SportsMGMTUnitTest", "SportsMGMTUnitTest\SportsMGMTUnitTest.csproj", "{A1D70553-634F-4278-B7EE-14E710F0ACDE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interfaces", "Interfaces\Interfaces.csproj", "{B90B0F42-8AA9-4ABB-B5C7-A4ACC803BB2E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{A1D70553-634F-4278-B7EE-14E710F0ACDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1D70553-634F-4278-B7EE-14E710F0ACDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A1D70553-634F-4278-B7EE-14E710F0ACDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B90B0F42-8AA9-4ABB-B5C7-A4ACC803BB2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B90B0F42-8AA9-4ABB-B5C7-A4ACC803BB2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B90B0F42-8AA9-4ABB-B5C7-A4ACC803BB2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B90B0F42-8AA9-4ABB-B5C7-A4ACC803BB2E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

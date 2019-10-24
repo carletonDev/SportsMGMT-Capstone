@@ -20,18 +20,6 @@ namespace SportsMGMTBLL
             return getRole;
         }            
 
-        public bool InsertRole(Roles role)
-        {
-            RolesDataAccess rolesDataAccess = new RolesDataAccess();
-            bool check = rolesDataAccess.InsertRole(role);
-
-            return check;
-        }
-        public void UpdateRolesByName(Users user,Roles role)
-        {
-            RolesDataAccess rolesDataAccess = new RolesDataAccess();
-            rolesDataAccess.UpdateRolesByName(user, role);
-        }
         //check what a user's role is
         public Roles CheckRoleAccess(Users role)
         {

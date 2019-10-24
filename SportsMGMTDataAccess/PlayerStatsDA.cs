@@ -6,14 +6,14 @@ namespace SportsMGMTDataAccess
     using System.Configuration;
     using System.Data;
     using System.Data.SqlClient;
+    using Interfaces.IDataAccess;
     using SportsMGMTCommon;
     //connection to CRUD and store  Player Stats
-    public class PlayerStatsDA
+    public class PlayerStatsDA:IPlayerStatsDA
     {
         //declare connection string and reader values
-        //string Connection = "Data Source=DESKTOP-H52G7QL\\SQLEXPRESS;Itnitial Catalog=SportsMGMT-capstone;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         public string Connection = ConfigurationManager.ConnectionStrings["Sports"].ConnectionString;
-        string statID = "statiD";string userID = "userID_fk";string gameID = "gameID_fk"; string points = "points";
+        string statID = "statID";string userID = "userID_fk";string gameID = "gameID_fk"; string points = "points";
         string assists = "assists";string rebounds = "rebounds"; string misses = "misses"; string teamID = "teamID_fk";
         //Get A List of Players Stats 
         public List<PlayerStats> GetPlayerStats()
@@ -138,8 +138,8 @@ namespace SportsMGMTDataAccess
                         command.Parameters.AddWithValue("@gid", player.GameID);
                         command.Parameters.AddWithValue("@points", player.Points);
                         command.Parameters.AddWithValue("@assists", player.Assists);
-                        command.Parameters.AddWithValue("@reb", player.Rebounds);
-                        command.Parameters.AddWithValue("@miss", player.Misses);
+                        command.Parameters.AddWithValue("@rebounds", player.Rebounds);
+                        command.Parameters.AddWithValue("@misses", player.Misses);
                         con.Open();
                         command.ExecuteNonQuery();
 

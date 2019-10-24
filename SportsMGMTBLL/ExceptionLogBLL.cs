@@ -12,15 +12,6 @@ namespace SportsMGMTBLL
     public class ExceptionLogBLL
     {
         //Create and Read Exceptions only Create actually implemented
-        public List<ExceptionLog> GetExceptions()
-        {
-            //create a data access object to call the method Get exceptions to populate a list
-            ExeceptionDataAccess ExceptionDA = new ExeceptionDataAccess();
-
-            List<ExceptionLog> listExceptions = ExceptionDA.GetExecptions();
-
-            return listExceptions;
-        }
         public bool StoreExceptions(Exception Ex)
         {
             //create a Data access object to call the method store exceptions
@@ -29,16 +20,6 @@ namespace SportsMGMTBLL
            bool check=ExceptionDA.StoreExceptions(Ex);
             //return check
             return check;
-        }
-        public List<ExceptionLog> GetExceptionsById(int id)
-        {
-            //create a data access object to call the method Get exceptions to populate a list
-            ExeceptionDataAccess ExceptionDA = new ExeceptionDataAccess();
-
-            List<ExceptionLog> listExceptions = ExceptionDA.GetExceptionbyId(id);
-
-            return listExceptions;
-
         }
     }
 }

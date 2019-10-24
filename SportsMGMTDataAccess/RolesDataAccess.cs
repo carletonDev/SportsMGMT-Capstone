@@ -6,13 +6,13 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Interfaces.IDataAccess;
 using SportsMGMTCommon;
 
 namespace SportsMGMTDataAccess
 {
-    public class RolesDataAccess
+    public class RolesDataAccess:IRolesDataAccess
     {
-        //string Connection = "Data Source=DESKTOP-H52G7QL\\SQLEXPRESS;Itnitial Catalog=SportsMGMT-capstone;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         public string Connection = ConfigurationManager.ConnectionStrings["Sports"].ConnectionString;
         //Method that retrieves all roles
         public List<Roles> GetRoles()
@@ -113,32 +113,7 @@ namespace SportsMGMTDataAccess
             }
             return getRoleAccess;
         }
-        //Method that updates the roles and stores the user who last modified the record in the database
-        public void UpdateRolesByName(Users user, Roles role)
-        {
-            //Update the User with the Role and the Name provided
-            try
-            {
-                using (SqlConnection con = new SqlConnection(Connection))
-                {
-                    using (SqlCommand command = new SqlCommand("sp_UpdateNullRolesByName", con))
-                    {
-                        command.CommandType = CommandType.StoredProcedure;
-                        command.CommandTimeout = 10;
-                        command.Parameters.AddWithValue("@rid", role.RoleID);
-                        command.Parameters.AddWithValue("@uid",user.UserID);
-                        command.Parameters.AddWithValue("@name", user.FullName);
-                        con.Open();
-                        command.ExecuteNonQuery();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                ExeceptionDataAccess exception = new ExeceptionDataAccess();
-                exception.StoreExceptions(ex);
-            }
-        }
+
 
         public bool DeleteRoles(string name)
         {

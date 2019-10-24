@@ -46,41 +46,7 @@ namespace SportsMGMTBLL
             Users = usersData.GetUsersByUserName(username);
             return Users;
         }
-        //View The Entire Team Roster
-
-        public List<Users>ViewMyTeam(int id)
-        {
-            List<Users> getUsers = new List<Users>();
-            UsersDataAccess usersData = new UsersDataAccess();
-            getUsers = usersData.ViewUsersOnTeam(id);
-
-            return getUsers;
-        }
-        //Coaches can View Null Contracts
-        public List<Users> ViewNullContracts()
-        {
-            //create a list of users without contracts to be assigned
-            UsersDataAccess usersDataAccess = new UsersDataAccess();
-            List<Users>viewNull=usersDataAccess.ViewNullContracts();
-            return viewNull;
-        }
-        //Coaches can assign Contracts to unsigned players
-        public bool AssignContracts(Users user)
-        {
-            //Tries to update a player contract returns true if succeeded.
-
-            try
-            {
-                UsersDataAccess usersDataAccess = new UsersDataAccess();
-                usersDataAccess.AssignContracts(user);
-            }
-            catch(Exception ex)
-            {
-                ExeceptionDataAccess ExceptionDA = new ExeceptionDataAccess();
-                ExceptionDA.StoreExceptions(ex);
-            }
-            return true;
-        }
+       
         //Update Users
         public bool UpdateUser(Users user)
         {

@@ -9,112 +9,13 @@ namespace SportsMGMTDataAccess
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+    using Interfaces.IDataAccess;
     using SportsMGMTCommon;
     //Creates the connection for the app attendance tables and bar chart
-    public class AttendanceDataAccess
+    public class AttendanceDataAccess:IAttendanceDataAccess
     {
         string Connection = ConfigurationManager.ConnectionStrings["Sports"].ConnectionString;
-        //string Connection = "Data Source=DESKTOP-H52G7QL\\SQLEXPRESS;Itnitial Catalog=SportMGMT-capstone;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
-        //Get A List of users who attended or didn't attend games depending on what you need
-        public List<Users> getGameAttendance(GameAttendance gameAttendance)
-        {
-            //make a list to store Games
-            List<Users> getAttended = new List<Users>();
-            //try to populate the list
-            try
-            {
-                using (SqlConnection con = new SqlConnection(Connection))
-                {
-                    using (SqlCommand command = new SqlCommand("sp_ViewGameAttendance", con))
-                    {
-                        command.CommandType = CommandType.StoredProcedure;
-                        command.CommandTimeout = 10;
-                        command.Parameters.AddWithValue("@attend", gameAttendance.Attended);
-                        command.Parameters.AddWithValue("@id", gameAttendance.GameID);
-                        con.Open();
-
-                        using (SqlDataReader reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                Users user = new Users();
-                                if (reader["full_name"] != DBNull.Value)
-                                {
-                                    user.FullName = (string)reader["full_name"];
-                                }
-                                if (reader["Phone"] != DBNull.Value)
-                                {
-                                    user.Phone = (string)reader["Phone"];
-                                }
-                                if (reader["Email"] != DBNull.Value)
-                                {
-                                    user.Email = (string)reader["Email"];
-                                }
-                                getAttended.Add(user);
-                            }
-                        }
-                    }
-                }
-            }
-
-
-            catch (Exception ex)
-            {
-                ExeceptionDataAccess exception = new ExeceptionDataAccess();
-                exception.StoreExceptions(ex);
-            }
-            return getAttended;
-        }
         //Get A List of User who attended or didnt attend practice depending on input provided
-        public List<Users> getPracticeAttendance(PracticeAttended practiceAttendance)
-        {
-            //make a list to store Games
-            List<Users> getAttended = new List<Users>();
-            //try to populate the list
-            try
-            {
-                using (SqlConnection con = new SqlConnection(Connection))
-                {
-                    using (SqlCommand command = new SqlCommand("sp_ViewAttendance", con))
-                    {
-                        command.CommandType = CommandType.StoredProcedure;
-                        command.CommandTimeout = 10;
-                        command.Parameters.AddWithValue("@attend", practiceAttendance.Attended);
-                        command.Parameters.AddWithValue("@id", practiceAttendance.PracticeID);
-                        con.Open();
-
-                        using (SqlDataReader reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                Users user = new Users();
-                                if (reader["full_name"] != DBNull.Value)
-                                {
-                                    user.FullName = (string)reader["full_name"];
-                                }
-                                if (reader["Phone"] != DBNull.Value)
-                                {
-                                    user.Phone = (string)reader["Phone"];
-                                }
-                                if (reader["Email"] != DBNull.Value)
-                                {
-                                    user.Email = (string)reader["Email"];
-                                }
-                                getAttended.Add(user);
-                            }
-                        }
-                    }
-                }
-            }
-
-
-            catch (Exception ex)
-            {
-                ExeceptionDataAccess exception = new ExeceptionDataAccess();
-                exception.StoreExceptions(ex);
-            }
-            return getAttended;
-        }
 
         public void CreateGameAttance(GameAttendance gameAttended)
         {
