@@ -489,7 +489,7 @@ namespace SportsMGMTApp.Controllers
         public ActionResult DeleteUser(int id)
         {
 
-            UserModel userModel = new UserModel();
+            UserModel userModel = new UserModel(userBLL,team,rolesBLL,contractsBLL);
             Users user = userBLL.GetUsers().Find(m => m.UserID == id);
             userModel.user = user;
             return View(userModel);
@@ -532,7 +532,7 @@ namespace SportsMGMTApp.Controllers
 
             Users user = userBLL.GetUsers().Find(m => m.UserID == id);
 
-            UserModel player = new UserModel
+            UserModel player = new UserModel(userBLL, team, rolesBLL, contractsBLL)
             {
                 user = user
             };
@@ -554,7 +554,7 @@ namespace SportsMGMTApp.Controllers
         [MustBeInRole(Roles="Coach,Admin")]
         public ActionResult UpdateTeam(int id)
         {
-            UserModel user = new UserModel();
+            UserModel user = new UserModel(userBLL, team, rolesBLL, contractsBLL);
 
 
 

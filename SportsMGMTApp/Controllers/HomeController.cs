@@ -22,13 +22,15 @@ namespace SportsMGMTApp.Controllers
         IUser userBLL;
         ITeam teamBLL;
         IRole rolesBLL;
+        IContracts contracts;
        static IExceptionsBLL exceptionLog;
-        public HomeController(IUser user,ITeam team,IRole roles,IExceptionsBLL ex)
+        public HomeController(IUser user,ITeam team,IRole roles,IExceptionsBLL ex,IContracts contract)
         {
             userBLL = user;
             teamBLL = team;
             rolesBLL = roles;
             exceptionLog = ex;
+            contracts = contract;
         }
         //returns the home page for admins with a model value of all users with no contracts
         public ActionResult DashboardAdmin()
@@ -110,7 +112,7 @@ namespace SportsMGMTApp.Controllers
 
             Users user = userBLL.GetUsers().Find(m => m.UserID == id);
             //create a new user model
-            UserModel userModel = new UserModel();
+            UserModel userModel = new UserModel(userBLL,teamBLL,rolesBLL,contracts);
             //place the user from id into user model
             userModel.user = user;
             return View(userModel);
