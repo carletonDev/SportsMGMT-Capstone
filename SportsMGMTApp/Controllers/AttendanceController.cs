@@ -7,17 +7,28 @@ namespace SportsMGMTApp.Controllers
     using SportsMGMTApp.Filters;
     using SportsMGMTBLL;
     using SportsMGMTCommon;
+    using Interfaces.IBusinessLogic;
+    using Interfaces.IDataAccess;
+    using SportsMGMTBLL.IOC;
+
     public class AttendanceController : Controller
     {
+        IAttendanceBLL attendance;
+        IUser usersBLL;
+        IPractice practiceBLL;
 
+        public AttendanceController()
+        {
+            attendance = new AttendanceBLL(Resolve.Attendance());
+            usersBLL = new UsersBLL(Resolve.Users(),Resolve.Exceptions());
+            practiceBLL = new PracticeBLL(Resolve.Practice());
+        }
         // GET: Attendance
         [HttpGet]
         [MustBeInRole(Roles="Coach,Admin")]
         public ActionResult ViewGameAttendance()
         {
             
-            AttendanceBLL attendance = new AttendanceBLL();
-            UsersBLL usersBLL = new UsersBLL();
             var userInfo = Session["Users"] as Users;
             List<GameAttendance> games = attendance.getGameAttendaned();
             //get the list of users for only that team
@@ -40,7 +51,6 @@ namespace SportsMGMTApp.Controllers
         public ActionResult ListAttendance()
         {
             var users = Session["Users"] as Users;
-            PracticeBLL practiceBLL = new PracticeBLL();
             List<Practice> getAllPractice = practiceBLL.GetPractice().FindAll(m => m.TeamID == users.TeamID);
 
 

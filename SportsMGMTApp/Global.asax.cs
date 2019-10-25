@@ -16,7 +16,7 @@ namespace SportsMGMTApp
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            var container = Resolver.Resolve();
+            var container = Resolve.Resolve();
         }
         protected void Application_AcquireRequestState(object sender, EventArgs e)
        {

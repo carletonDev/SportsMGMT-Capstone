@@ -2380,6 +2380,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Interfaces\Interfaces.csproj">
+      <Project>{B90B0F42-8AA9-4ABB-B5C7-A4ACC803BB2E}</Project>
+      <Name>Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SportsMGMTBLL\SportsMGMTBLL.csproj">
       <Project>{3e09e772-e2c3-484b-8bca-0ec9d41da314}</Project>
       <Name>SportsMGMTBLL</Name>
