@@ -13,13 +13,29 @@ namespace SportsMGMTApp.Controllers
     using System.Linq;
     using System.Web.Mvc;
     using System.Configuration;
+    using Interfaces.IBusinessLogic;
+
     /// <summary>
     /// The controller for the majority of user CRUD
     /// </summary>
     public class UserController : Controller
     {
         //inject interfaces into controller here
-
+        IUser userBLL;
+        IRole rolesBLL;
+        ITeam team;
+        IGame gameBLL;
+        IPractice practiceBLL;
+        IContracts contractsBLL;
+        public UserController(IUser user, IRole role, ITeam teams, IGame game, IPractice practice,IContracts contracts)
+        {
+            userBLL = user;
+            rolesBLL = role;
+            team = teams;
+            gameBLL = game;
+            practiceBLL = practice;
+            contractsBLL = contracts;
+        }
         //CRUD for user as well as sending Emails More detailed comments in method
         /// <summary>
         /// The GET for the User Register view 
@@ -46,9 +62,6 @@ namespace SportsMGMTApp.Controllers
 
                 Users insert = UserMap.SendToBLL(user);
 
-                //create a new Business Logic Layer class object
-
-                UsersBLL userBLL = new UsersBLL();
 
                 //create a list object to store current list of users
 
@@ -102,12 +115,11 @@ namespace SportsMGMTApp.Controllers
         [HttpPost]
         public ActionResult ForgotPassword(string username)
         {
-                //create a new users BLL instance
-                UsersBLL usersBLL = new UsersBLL();
+
             //check if the user exists 
             var dash = Session["Dash"] as DashBoard;
             dash.Message = username;
-                bool check = usersBLL.GetUsers().Exists(m => m.UserName == username);
+                bool check = userBLL.GetUsers().Exists(m => m.UserName == username);
 
                 if (check) //if the user exists
                 {
@@ -125,9 +137,9 @@ namespace SportsMGMTApp.Controllers
         {
          //store dashboard set properties from username into an object
         //find the user with the message username passed from Forgot Password view
-        UsersBLL usersBLL = new UsersBLL();
+
         var dash = Session["Dash"] as DashBoard;
-        Users user = usersBLL.GetUsers().Find(m => m.UserName == dash.Message);
+        Users user = userBLL.GetUsers().Find(m => m.UserName == dash.Message);
             //store the users information into a LoginUser Model
             LoginUser login = new LoginUser
             {
@@ -144,17 +156,17 @@ namespace SportsMGMTApp.Controllers
         {
             if (ModelState.IsValid)
             {   //create a user BLL instance
-                UsersBLL usersBLL = new UsersBLL();
+
                 //Store update object into a common class object
-                Users updateUser = usersBLL.GetUsers().Find(m => m.UserName == users.UserName);
+                Users updateUser = userBLL.GetUsers().Find(m => m.UserName == users.UserName);
                 //Store a check to see if update successful
-                Users checkUser = usersBLL.GetUsers().Find(m => m.UserName == users.UserName);
+                Users checkUser = userBLL.GetUsers().Find(m => m.UserName == users.UserName);
                 //set update user object pass word to the password passed in by the model
                 updateUser.Password = users.Password;
                 //perform update
-                usersBLL.UpdateUser(updateUser);
+                userBLL.UpdateUser(updateUser);
                 //check if the user has been updated by searching for all matching passwords first then to filter duplicates by unique username
-                Users checkMethod = usersBLL.GetUsers().FindAll(m => m.Password == updateUser.Password).Find(m => m.UserName == updateUser.UserName);
+                Users checkMethod = userBLL.GetUsers().FindAll(m => m.Password == updateUser.Password).Find(m => m.UserName == updateUser.UserName);
                 //if the objects are not the same as the original object
                 if (checkUser != checkMethod)
                 {
@@ -205,8 +217,8 @@ namespace SportsMGMTApp.Controllers
                 UserMapper userMapper = new UserMapper();
                 Users login = userMapper.LoginBLLMapper(loginUser);
                 //call BLL layer
-                UsersBLL usersBLL = new UsersBLL();
-                Users loginUsers = usersBLL.GetUsersByUserName(login.UserName);
+
+                Users loginUsers = userBLL.GetUsersByUserName(login.UserName);
                 //display login successful or failed due to input error
                 //if (loginUsers.Password is null) //BUG: Database connectivity has been an issue here is a patch for users not edited by admin
                 //{
@@ -219,7 +231,7 @@ namespace SportsMGMTApp.Controllers
                     return View(loginUser);
                 }
                 //Call roles BLL
-                RolesBLL rolesBLL = new RolesBLL();
+
                 Roles role = rolesBLL.CheckRoleAccess(loginUsers);
                 //DO NOT REMOVE
                 Session["Roles"] = role.RoleType;
@@ -283,9 +295,9 @@ namespace SportsMGMTApp.Controllers
             List<Practice> getPractice = new List<Practice>();
             List<Game> getGames = new List<Game>();
             //create a team bll to get team names
-            TeamBLL team = new TeamBLL();
-            PracticeBLL practiceBLL = new PracticeBLL();
-            GameBLL gameBLL = new GameBLL();
+
+
+
             List<Team> getTeam = team.GetTeams();
             var users = Session["Users"] as Users;
             //populate lists
@@ -367,18 +379,18 @@ namespace SportsMGMTApp.Controllers
         [MustBeInRole(Roles="Admin,Coach")]
         public ActionResult ListAllUsers()
         {
-            UsersBLL usersBLL = new UsersBLL();
+
             var user = Session["Users"] as Users;
             List<Users> viewAll = new List<Users>();
             if (user.RoleID == 1)
             {
-                viewAll = usersBLL.GetUsers();
+                viewAll = userBLL.GetUsers();
             }
             else if (user.RoleID == 2)
             {
-                viewAll = usersBLL.GetUsers().FindAll(m=>m.TeamID==user.TeamID);
-                viewAll.AddRange(usersBLL.GetUsers().FindAll(m => m.TeamID == 1034));
-                viewAll.AddRange(usersBLL.GetUsers().FindAll(m => m.TeamID == 0));
+                viewAll = userBLL.GetUsers().FindAll(m=>m.TeamID==user.TeamID);
+                viewAll.AddRange(userBLL.GetUsers().FindAll(m => m.TeamID == 1034));
+                viewAll.AddRange(userBLL.GetUsers().FindAll(m => m.TeamID == 0));
             }
             return View(viewAll);
         }
@@ -388,13 +400,13 @@ namespace SportsMGMTApp.Controllers
         public ActionResult ListAllUsers(int id)
         {
             var user = Session["Users"] as Users;
-            UsersBLL usersBLL = new UsersBLL();
-            Users findUser = usersBLL.GetUsers().Find(m => m.UserID == id);
+
+            Users findUser = userBLL.GetUsers().Find(m => m.UserID == id);
 
             findUser.TeamID = 1034;
 
-            usersBLL.UpdateUser(findUser);
-            List<Users> myTeam = usersBLL.GetUsers().FindAll(m => m.TeamID == user.TeamID);
+            userBLL.UpdateUser(findUser);
+            List<Users> myTeam = userBLL.GetUsers().FindAll(m => m.TeamID == user.TeamID);
             bool check=myTeam.Exists(m => m.UserID == id);
 
             //check if player still exists in team roster
@@ -415,9 +427,9 @@ namespace SportsMGMTApp.Controllers
         {
             //Make a new Register
             UserRegister user = new UserRegister();
-            UsersBLL usersBLL = new UsersBLL(); //make a users bll object
+
             var users = Session["Users"] as Users; //store user session values into an object
-            Users findUser = usersBLL.GetUsers().Find(m => m.UserID == users.UserID); //find the user in the database
+            Users findUser = userBLL.GetUsers().Find(m => m.UserID == users.UserID); //find the user in the database
             string[] fullname = findUser.FullName.Split(' '); //spilt the fullname for form purposes
 
             //set values to show user in model to edit
@@ -438,14 +450,12 @@ namespace SportsMGMTApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                //User BLL
 
-                UsersBLL usersBLL = new UsersBLL();
 
                 // object for checking edit and to store the edits from the user
 
-                Users editCheck = usersBLL.GetUsers().Find(m => m.UserID == user.UserID);
-                Users findUser = usersBLL.GetUsers().Find(m => m.UserID == user.UserID);
+                Users editCheck = userBLL.GetUsers().Find(m => m.UserID == user.UserID);
+                Users findUser = userBLL.GetUsers().Find(m => m.UserID == user.UserID);
 
                 //set values with data annotations
 
@@ -456,7 +466,7 @@ namespace SportsMGMTApp.Controllers
                 findUser.Address = user.Address;
                 findUser.Email = user.Email;
 
-                usersBLL.UpdateUser(findUser);
+                userBLL.UpdateUser(findUser);
                 //check if update successful and store messages
                 if (editCheck == findUser)
                 {
@@ -478,9 +488,9 @@ namespace SportsMGMTApp.Controllers
         [MustBeInRole(Roles="Admin")]
         public ActionResult DeleteUser(int id)
         {
-            UsersBLL usersBLL = new UsersBLL();
+
             UserModel userModel = new UserModel();
-            Users user = usersBLL.GetUsers().Find(m => m.UserID == id);
+            Users user = userBLL.GetUsers().Find(m => m.UserID == id);
             userModel.user = user;
             return View(userModel);
         }
@@ -488,10 +498,10 @@ namespace SportsMGMTApp.Controllers
         [MustBeInRole(Roles = "Admin")]
         public ActionResult DeleteUser(UserModel model)
         {
-                UsersBLL usersBLL = new UsersBLL();
-                Users user = usersBLL.GetUsers().Find(m => m.UserID == model.user.UserID);
-                usersBLL.DeleteUserByName(model.user);
-                bool check = usersBLL.GetUsers().Exists(m => m.UserID == model.user.UserID);
+
+                Users user = userBLL.GetUsers().Find(m => m.UserID == model.user.UserID);
+                userBLL.DeleteUserByName(model.user);
+                bool check = userBLL.GetUsers().Exists(m => m.UserID == model.user.UserID);
                 if (check)
                 {
                     ViewBag.Message = "Delete Failed";
@@ -519,8 +529,8 @@ namespace SportsMGMTApp.Controllers
         [MustBeInRole(Roles="Admin")]
         public ActionResult UpdateUser(int id)
         {
-            UsersBLL usersBLL = new UsersBLL();
-            Users user = usersBLL.GetUsers().Find(m => m.UserID == id);
+
+            Users user = userBLL.GetUsers().Find(m => m.UserID == id);
 
             UserModel player = new UserModel
             {
@@ -546,7 +556,7 @@ namespace SportsMGMTApp.Controllers
         {
             UserModel user = new UserModel();
 
-            UsersBLL userBLL = new UsersBLL();
+
 
             Users finduser = userBLL.GetUsers().Find(m => m.UserID == id);
 
@@ -562,7 +572,7 @@ namespace SportsMGMTApp.Controllers
         [MustBeInRole(Roles="Coach,Admin")]
         public ActionResult UpdateTeam(UserModel model)
         {
-            UsersBLL userBLL = new UsersBLL();
+
             Users finduser = userBLL.GetUsers().Find(m => m.UserID == model.UserID);
 
             //set the users team and contract to none
@@ -596,11 +606,11 @@ namespace SportsMGMTApp.Controllers
             //Instantiate the dashboard class for session variables
 
             DashBoard dashboard = new DashBoard();
-            TeamBLL team = new TeamBLL();
-            UsersBLL usersBLL = new UsersBLL();
+
+
             Team getTeam = new Team();
             List<Users> getUsers = new List<Users>();
-            TeamBLL teamBLL = new TeamBLL();
+  
             if (users.TeamID != 0)
             {
                 getTeam = team.GetTeams().Find(m => m.TeamID == users.TeamID);
@@ -609,10 +619,10 @@ namespace SportsMGMTApp.Controllers
             //Get Average Contract
             if (users.TeamID != 0)
             {
-                getUsers = usersBLL.GetUsers().FindAll(m => m.TeamID == users.TeamID);
+                getUsers = userBLL.GetUsers().FindAll(m => m.TeamID == users.TeamID);
             }
             else { }
-            ContractsBLL contractsBLL = new ContractsBLL();
+
             List<decimal> salaries = new List<decimal>();
             //Find Days remaining till Contract Expiration
 
@@ -638,23 +648,23 @@ namespace SportsMGMTApp.Controllers
             //User Messages and Alerts
             //message for users with no teams
 
-            List<Users> getUser = usersBLL.GetUsers().FindAll(m => m.TeamID == 0);
-            getUser.AddRange(usersBLL.GetUsers().FindAll(m => m.TeamID == 1034));
+            List<Users> getUser = userBLL.GetUsers().FindAll(m => m.TeamID == 0);
+            getUser.AddRange(userBLL.GetUsers().FindAll(m => m.TeamID == 1034));
             dashboard.NoTeam = getUser.Count;
 
             dashboard.FreeAgents = getUser;
 
             //Get Users Roster for his Team
-            dashboard.MyRoster = usersBLL.GetUsers().FindAll(m => m.TeamID == users.TeamID);
+            dashboard.MyRoster = userBLL.GetUsers().FindAll(m => m.TeamID == users.TeamID);
             //Get Team Standings
-            dashboard.Standings = teamBLL.GetTeams().FindAll(m => m.TeamType == "basketball");
+            dashboard.Standings = team.GetTeams().FindAll(m => m.TeamType == "basketball");
             //message for users with no roles for admin to notifiy
 
-            List<Users> UsersRole = usersBLL.GetUsers().FindAll(m => m.RoleID == 0);
+            List<Users> UsersRole = userBLL.GetUsers().FindAll(m => m.RoleID == 0);
             dashboard.NoRoles = UsersRole.Count;
 
             //Salary Cap Remaining
-            List<Users> FindCap = usersBLL.GetUsers().FindAll(m => m.TeamID == users.TeamID);
+            List<Users> FindCap = userBLL.GetUsers().FindAll(m => m.TeamID == users.TeamID);
             List<decimal> CapSpace = new List<decimal>();
             //for each user in find cap
             foreach(Users users1 in FindCap)

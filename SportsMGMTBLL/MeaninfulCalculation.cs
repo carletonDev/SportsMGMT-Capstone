@@ -15,13 +15,15 @@
         public static ITeam team;
         public static IContracts contractsBLL;
         public static IPractice practiceBLL;
-        public MeaningfulCalculation(IAttendanceBLL attend, IUser user,ITeam teamBLL,IContracts contracts,IPractice practice)
+        public static IGame games;
+        public MeaningfulCalculation(IAttendanceBLL attend, IUser user,ITeam teamBLL,IContracts contracts,IPractice practice, IGame game)
         {
             attendance = attend;
             usersBLL = user;
             team = teamBLL;
             contractsBLL = contracts;
             practiceBLL = practice;
+            games = game;
         }
         public static CountAttendance GetPracticeAttendanceUser(int teamid, int userid)
         {
@@ -160,7 +162,7 @@
             }
             //find all upcoming games and practices for the next two weeks for notifications for the players
 
-            GameBLL games = new GameBLL();
+
             List<Game> homeGames = games.GetGames().FindAll(m => m.HomeTeam == users.TeamID);
             List<Game> awayGame = games.GetGames().FindAll(m => m.AwayTeam == users.TeamID);
 

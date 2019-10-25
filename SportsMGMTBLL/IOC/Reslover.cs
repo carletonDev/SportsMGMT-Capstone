@@ -14,7 +14,7 @@ namespace SportsMGMTBLL.IOC
 {
     public static  class Resolve
     {
-        public static WindsorContainer Resolver()
+        public static void Resolver()
         {
             // application starts...
             var container = new WindsorContainer();
@@ -42,7 +42,6 @@ namespace SportsMGMTBLL.IOC
             container.Resolve<IUser>();
             container.Resolve<ITeam>();
             container.Resolve<IRole>();
-            return container;
         }
         public static IAttendanceDataAccess Attendance()
         {

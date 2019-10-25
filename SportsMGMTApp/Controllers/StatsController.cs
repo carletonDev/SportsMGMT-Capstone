@@ -9,9 +9,18 @@
     using System.Web.Mvc;
     using System.Collections;
     using SportsMGMTApp.Filters;
+    using Interfaces.IBusinessLogic;
+
     public class StatsController : Controller
     {
         // GET: Stats
+        IPlayerStats playerStats;
+        IUser usersBLL;
+         public StatsController(IPlayerStats stats, IUser user)
+        {
+            playerStats = stats;
+            usersBLL = user;
+        }
         public ActionResult Charts()
         {
             //populate stats model for visual display in charts view using charts.js
@@ -32,7 +41,6 @@
         [MustBeInRole(Roles="Admin,Coach,Player")]
         public ActionResult StatTable()
         {
-            PlayerStatsBLL playerStats = new PlayerStatsBLL();
             var user = Session["Users"] as Users;
 
             List<PlayerStats> statTable = playerStats.GetStats().FindAll(m => m.TeamID == user.TeamID);
@@ -45,8 +53,8 @@
         public ActionResult UpdatePlayerStats(int id)
         {
             PlayerStatsModel player = new PlayerStatsModel();
-            PlayerStatsBLL updatePlayer = new PlayerStatsBLL();
-            PlayerStats playerUpdated = updatePlayer.GetStats().Find(m => m.StatID == id);
+
+            PlayerStats playerUpdated = playerStats.GetStats().Find(m => m.StatID == id);
             player.StatID = playerUpdated.StatID;
             player.Misses = playerUpdated.Misses;
             player.GameID = playerUpdated.GameID;
@@ -66,9 +74,9 @@
         {
             if (ModelState.IsValid)
             {
-                PlayerStatsBLL updatePlayer = new PlayerStatsBLL();
 
-                PlayerStats checkUpdate = updatePlayer.GetStats().Find(m => m.StatID == player.StatID);
+
+                PlayerStats checkUpdate = playerStats.GetStats().Find(m => m.StatID == player.StatID);
 
                 var user = Session["Users"] as Users;
                 PlayerStats playerUpdate = new PlayerStats();
@@ -81,9 +89,9 @@
                 playerUpdate.GameID = player.GameID;
                 playerUpdate.StatID = player.StatID;
 
-                updatePlayer.UpdateStats(playerUpdate);
+                playerStats.UpdateStats(playerUpdate);
 
-                PlayerStats updatedPlayer = updatePlayer.GetStats().Find(m => m.StatID == player.StatID);
+                PlayerStats updatedPlayer = playerStats.GetStats().Find(m => m.StatID == player.StatID);
 
                 if(updatedPlayer != checkUpdate)
                 {
@@ -123,7 +131,7 @@
             if (ModelState.IsValid)
             {
                 var user = Session["Users"] as Users;
-                PlayerStatsBLL createPlayer = new PlayerStatsBLL();
+
                 PlayerStats insertPlayer = new PlayerStats();
                 insertPlayer.Misses = player.Misses;
                 insertPlayer.Points = player.Points;
@@ -133,7 +141,7 @@
                 insertPlayer.TeamID = user.TeamID;
                 insertPlayer.GameID = player.GameID;
 
-                bool checkDuplicate = createPlayer.GetStats().Exists(m => m.GameID == insertPlayer.GameID && m.UserID == insertPlayer.UserID);
+                bool checkDuplicate = playerStats.GetStats().Exists(m => m.GameID == insertPlayer.GameID && m.UserID == insertPlayer.UserID);
 
                 if (checkDuplicate)
                 {
@@ -142,10 +150,10 @@
                 }
                 else
                 {
-                    createPlayer.InsertStats(insertPlayer);
+                    playerStats.InsertStats(insertPlayer);
                 }
 
-                bool checkPlayer = createPlayer.GetStats().Exists(m => m.GameID == insertPlayer.GameID && m.UserID == insertPlayer.UserID);
+                bool checkPlayer = playerStats.GetStats().Exists(m => m.GameID == insertPlayer.GameID && m.UserID == insertPlayer.UserID);
 
 
                 if (checkPlayer)
@@ -172,7 +180,7 @@
             //List of Jpeg Charts to Display
             StatsModel stats = new StatsModel();
             //Attendance pie chart
-            UsersBLL usersBLL = new UsersBLL();
+
             var user = Session["Users"] as Users;
             List<Users> users = usersBLL.GetUsers().FindAll(m => m.TeamID == user.TeamID && m.RoleID !=2);
             List<CountAttendance> count = new List<CountAttendance>();
@@ -217,12 +225,12 @@
         public void GameStatsChart(StatsModel stats,int teamID)
         {
             //potentially refractor this into a method later depends
-            PlayerStatsBLL playerStatsBLL = new PlayerStatsBLL();
-            UsersBLL users = new UsersBLL();
+
+
             //make list to store all player stats for all games
             List<PlayerStats> AllStatsForTeam = new List<PlayerStats>();
             //find all players on team and filter out coaches
-            List<Users> myTeam = users.GetUsers().FindAll(m => m.TeamID == teamID && m.RoleID !=2);
+            List<Users> myTeam = usersBLL.GetUsers().FindAll(m => m.TeamID == teamID && m.RoleID !=2);
             ArrayList playerNames = new ArrayList();
             //Get a List of onlyPlayers names
             foreach(Users user in myTeam)
@@ -241,7 +249,7 @@
             foreach(Users user in myTeam)
             {
                 //Get the stats for the player for each game
-                List<PlayerStats> getPlayerStats = playerStatsBLL.GetStats().FindAll(m => m.UserID == user.UserID);
+                List<PlayerStats> getPlayerStats = playerStats.GetStats().FindAll(m => m.UserID == user.UserID);
                 //sum all points and store in array
                 int pointsTotal = 0;
                 foreach(PlayerStats player in getPlayerStats)

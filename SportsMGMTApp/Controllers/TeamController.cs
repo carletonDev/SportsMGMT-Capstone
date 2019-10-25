@@ -1,5 +1,6 @@
 ﻿namespace SportsMGMTApp.Controllers
 {
+    using Interfaces.IBusinessLogic;
     using SportsMGMTApp.Filters;
     using SportsMGMTApp.Models;
     using SportsMGMTBLL;
@@ -10,6 +11,11 @@
     public class TeamController : Controller
     {
         //CRUD for Teams self explanatory method names with more detailed comments in the method
+        ITeam teamBLL;
+        public TeamController(ITeam team)
+        {
+            teamBLL = team;
+        }
       [HttpGet]
       [MustBeInRole(Roles ="Admin")]
       public ActionResult CreateTeam()
@@ -22,8 +28,7 @@
         {
             if (ModelState.IsValid)
             {
-                //create a new Team BLL
-                TeamBLL teamBLL = new TeamBLL();
+
                 //Map Data Annotations to Common object
                 Team createTeam = new Team();
                 createTeam.TeamName = team.TeamName;
@@ -58,8 +63,7 @@
         [MustBeInRole(Roles="Admin")]
         public ActionResult ListTeam()
         {
-            //create Team BLL
-            TeamBLL teamBLL = new TeamBLL();
+
 
             //create a new Team List
             List<Team> getTeams = teamBLL.GetTeams();
@@ -70,8 +74,7 @@
         [MustBeInRole(Roles="Admin")]
         public ActionResult UpdateTeam(int id)
         {
-            //create a new Team BLL object
-            TeamBLL teamBLL = new TeamBLL();
+
 
             //create a new team model with data annotations
             TeamModel team = new TeamModel();
@@ -94,8 +97,7 @@
         {
             if (ModelState.IsValid)
             {
-                //create Team BLL object
-                TeamBLL teamBLL = new TeamBLL();
+
 
                 //find the object in database to check against the updates
                 Team checkTeam = teamBLL.GetTeams().Find(m => m.TeamID == team.TeamID);
@@ -137,8 +139,7 @@
         [MustBeInRole(Roles="Admin")]
         public ActionResult DeleteTeam(int id)
         {
-            //Create Team BLL object
-            TeamBLL teamBLL = new TeamBLL();
+
             //Create a team model for the view
             TeamModel team = new TeamModel();
             Team deleteTeam = new Team();
@@ -152,8 +153,7 @@
         [MustBeInRole(Roles="Admin")]
         public ActionResult DeleteTeam(TeamModel team)
         {
-            //create Team BLL object
-            TeamBLL teamBLL = new TeamBLL();
+
             //find object
             Team deleteTeam = teamBLL.GetTeams().Find(m => m.TeamID == team.TeamID);
             team.Team = deleteTeam;

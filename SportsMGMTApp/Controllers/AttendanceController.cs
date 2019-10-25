@@ -17,12 +17,14 @@ namespace SportsMGMTApp.Controllers
         IUser usersBLL;
         IPractice practiceBLL;
         IGame gameBLL;
-        public AttendanceController()
+        ITeam team;
+        public AttendanceController(IAttendanceBLL attend, IUser user,IPractice practice, IGame game,ITeam teams)
         {
-            attendance = new AttendanceBLL(Resolve.Attendance());
-            usersBLL = new UsersBLL(Resolve.Users(),Resolve.Exceptions());
-            practiceBLL = new PracticeBLL(Resolve.Practice());
-            gameBLL = new GameBLL(Resolve.Game(), Resolve.Exceptions());
+            attendance = attend;
+            usersBLL = user;
+            practiceBLL = practice;
+            gameBLL = game;
+            team = teams;
         }
         // GET: Attendance
         [HttpGet]
@@ -84,10 +86,8 @@ namespace SportsMGMTApp.Controllers
         [MustBeInRole(Roles="Admin,Coach")]
         public ActionResult CreateGameAttendance(int id)
         {
-            GameAttendanceModel model = new GameAttendanceModel
-            {
-                GameID = id
-            };
+            GameAttendanceModel model = new GameAttendanceModel(gameBLL,team,usersBLL,attendance);
+            model.GameID = id;
 
             return View(model);
         }
