@@ -51,18 +51,7 @@ namespace SportsMGMTUnitTest
             //Assert
             Assert.IsTrue(check);
         }
-        [TestMethod]
-        public void GetExceptions()
-        {
-            //Arrange
-            ExceptionLogBLL ExceptionBLL = new ExceptionLogBLL();
-            //Act
-            List<ExceptionLog> exceptionLogs = ExceptionBLL.GetExceptions();
-            ExceptionLog exceptionLog = new ExceptionLog();
-            bool check=exceptionLogs.Exists(m =>m.Message == "testing the database ");
-            //Assert
-            Assert.IsTrue(check);
-        }
+
         [TestMethod]
         public void StoreExceptions()
         {
@@ -74,58 +63,7 @@ namespace SportsMGMTUnitTest
             //Assert
             Assert.IsTrue(check);
         }
-        [TestMethod]
-        public void GetExceptionsById()
-        {
-            //Arrange
-            ExceptionLogBLL ExceptionBLL = new ExceptionLogBLL();
-            //Act
-            List<ExceptionLog> exceptionLogs = ExceptionBLL.GetExceptionsById(1);
-            bool check=exceptionLogs.Exists(m => m.LogID == 0);
-            //Assert
-            Assert.IsTrue(check);
-        }
-        [TestMethod]
-        public void ViewUsersOnTeam()
-        {
 
-            //Arrange
-            int id = 1;
-            bool check = false;
-            UsersBLL usersBLL = new UsersBLL();
-            //Act
-            List<Users> myTeam=usersBLL.ViewMyTeam(id);
-            check = myTeam.Exists(m => m.FullName == "Carleton Cabarrus");
-            //Assert
-            Assert.IsTrue(check);
-        }
-        [TestMethod]
-        public void ViewNullContracts()
-        {
-            //Arrange 
-            UsersBLL usersBLL = new UsersBLL();
-            List<Users> viewNullContracts = new List<Users>();
-            //Act
-            viewNullContracts = usersBLL.ViewNullContracts();
-            bool check = viewNullContracts.Exists(m => m.FullName == "Mr test");
-            //Assert
-            Assert.IsFalse(check);
-        }
-
-        [TestMethod]
-        public void AssignContracts()
-        {
-            //Arrange
-            UsersBLL usersBLL = new UsersBLL();
-            Users users = new Users();
-            bool check;
-            //Act
-            users.FullName = "Bobby Messina";
-            users.ContractID = 1;
-            check=usersBLL.AssignContracts(users);
-            //Assert
-            Assert.IsTrue(check);
-        }
         [TestMethod]
         public void DeletePlayers()
         {

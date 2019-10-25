@@ -12,7 +12,7 @@ namespace SportsMGMTDataAccess
     public class PlayerStatsDA:IPlayerStatsDA
     {
         //declare connection string and reader values
-        public string Connection = ConfigurationManager.ConnectionStrings["Sports"].ConnectionString;
+        public string Connection = AppSettings.Default.ConnectionString;
         string statID = "statID";string userID = "userID_fk";string gameID = "gameID_fk"; string points = "points";
         string assists = "assists";string rebounds = "rebounds"; string misses = "misses"; string teamID = "teamID_fk";
         //Get A List of Players Stats 

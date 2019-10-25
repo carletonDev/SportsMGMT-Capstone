@@ -14,7 +14,7 @@ namespace SportsMGMTDataAccess
     //Creates the connection for the app attendance tables and bar chart
     public class AttendanceDataAccess:IAttendanceDataAccess
     {
-        string Connection = ConfigurationManager.ConnectionStrings["Sports"].ConnectionString;
+        string Connection =AppSettings.Default.ConnectionString;
         //Get A List of User who attended or didnt attend practice depending on input provided
 
         public void CreateGameAttance(GameAttendance gameAttended)

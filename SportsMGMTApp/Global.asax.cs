@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SportsMGMTBLL.IOC;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
@@ -17,6 +18,7 @@ namespace SportsMGMTApp
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            var container = Resolver.Resolve();
         }
         protected void Application_AcquireRequestState(object sender, EventArgs e)
        {

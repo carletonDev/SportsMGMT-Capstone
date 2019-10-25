@@ -3,18 +3,17 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Interfaces.IDataAccess;
 using SportsMGMTCommon;
+
+
 
 namespace SportsMGMTDataAccess
 {
     public class RolesDataAccess:IRolesDataAccess
     {
-        public string Connection = ConfigurationManager.ConnectionStrings["Sports"].ConnectionString;
-        //Method that retrieves all roles
+        public string Connection = AppSettings.Default.ConnectionString;
+       
         public List<Roles> GetRoles()
         {
             //make a list to store roles

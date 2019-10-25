@@ -2,6 +2,7 @@
 
 namespace SportsMGMTBLL
 {
+    using Interfaces.IBusinessLogic;
     using SportsMGMTCommon;
     using SportsMGMTDataAccess;
     using System;
@@ -9,7 +10,7 @@ namespace SportsMGMTBLL
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-    public class TeamBLL
+    public class TeamBLL:ITeam
     {
         //CRUD FOR TEAMS
         //Method to call the Team DA layer and get the current teams

@@ -68,19 +68,6 @@ namespace SportsMGMTUnitTest
             //Assert the check is false since it has been deleted
             Assert.IsFalse(check);
         }
-        [TestMethod]
-        public void CapSpace()
-        {
-            //Arrange - Set up team object set it to a team in db 
-            Team team = new Team();
-            team.TeamName = "Macon SmallTowners";
-            //call BLL
-            TeamBLL teamBLL = new TeamBLL();
-            //Act set capSpace field to the cap space remaining in team
-            decimal capSpace = teamBLL.CapSpace(team);
-            //check if it pulled information in database
-            //Assert its false that it pulled the initializer 0.0M
-            Assert.IsFalse(0.0M == capSpace);
-        }
+
     }
 }

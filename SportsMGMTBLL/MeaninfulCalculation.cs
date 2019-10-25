@@ -1,23 +1,35 @@
 ﻿namespace SportsMGMTBLL
 {
+    using Interfaces.IBusinessLogic;
     using SportsMGMTCommon;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-    public static class MeaningfulCalculation
+    public  class MeaningfulCalculation
     {
         //Meaningful Calulation to count the number of Attendance Vs Absence per game 
+       public static IAttendanceBLL attendance;
+        public static  IUser usersBLL;
+        public static ITeam team;
+        public static IContracts contractsBLL;
+        public static IPractice practiceBLL;
+        public MeaningfulCalculation(IAttendanceBLL attend, IUser user,ITeam teamBLL,IContracts contracts,IPractice practice)
+        {
+            attendance = attend;
+            usersBLL = user;
+            team = teamBLL;
+            contractsBLL = contracts;
+            practiceBLL = practice;
+        }
         public static CountAttendance GetPracticeAttendanceUser(int teamid, int userid)
         {
             //create count attendance variable
             CountAttendance count = new CountAttendance();
             //get the users full name
-            UsersBLL usersBLL = new UsersBLL();
             count.FullName = usersBLL.GetUsers().Find(m => m.UserID == userid).FullName;
             //get the total attendance for the team
-            AttendanceBLL attendance = new AttendanceBLL();
             List<PracticeAttended> getAttendance = attendance.getPracticeAttendaned(teamid);
             //store in a list the total times the user has been present
             List<PracticeAttended> userPresent = getAttendance.FindAll(m => m.UserID == userid).FindAll(m => m.Attended == true);
@@ -61,11 +73,8 @@
             //Instantiate the dashboard class for session variables
 
             DashBoard dashboard = new DashBoard();
-            TeamBLL team = new TeamBLL();
-            UsersBLL usersBLL = new UsersBLL();
             Team getTeam = new Team();
             List<Users> getUsers = new List<Users>();
-            TeamBLL teamBLL = new TeamBLL();
             if (users.TeamID != 0)
             {
                 getTeam = team.GetTeams().Find(m => m.TeamID == users.TeamID);
@@ -77,7 +86,6 @@
                 getUsers = usersBLL.GetUsers().FindAll(m => m.TeamID == users.TeamID);
             }
             else { }
-            ContractsBLL contractsBLL = new ContractsBLL();
             List<decimal> salaries = new List<decimal>();
             //Find Days remaining till Contract Expiration
 
@@ -116,7 +124,7 @@
             //Get Users Roster for his Team
             dashboard.MyRoster = usersBLL.GetUsers().FindAll(m => m.TeamID == users.TeamID);
             //Get Team Standings
-            dashboard.Standings = teamBLL.GetTeams().FindAll(m => m.TeamType == "basketball");
+            dashboard.Standings = team.GetTeams().FindAll(m => m.TeamType == "basketball");
             //sort by wins
             dashboard.Standings.Sort((x,y)=>y.Wins.CompareTo(x.Wins));
             //message for users with no roles for admin to notifiy
@@ -162,7 +170,7 @@
             allGames.AddRange(awayGame);
 
             //Get all practices
-            PracticeBLL practiceBLL = new PracticeBLL();
+
             List<Practice> teamPractices = practiceBLL.GetPractice().FindAll(m => m.TeamID == users.TeamID);
 
             //check time span find the game one week away
@@ -217,7 +225,6 @@
         //formats game name and practice type format
         public static string FormatGameName(Game game,Users user)
         {
-            TeamBLL team = new TeamBLL();
             if(game is null)
             {
                 return "No Upcoming Games";
@@ -269,29 +276,6 @@
             return colors;
         }
         //returns a string of color hexidecimal
-        //public static string HexidecimalRandom()
-        //{   //start a hex variable with a # for colors
-        //    char[] hex = new char[7];
-        //    hex[0] = '#';
-        //    //initalize a random int to go through the dictionary and create a Random value
-        //    int random = 0;
-        //    char[] hexdictionary = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
-        //    Random random1 = new Random();
-
-        //    for (int y = 1; y <= 6; y++)
-        //    {
-        //        //get a random number with a max of 16 to represent the 16 elements in the array
-        //        random = random1.Next(0,15);
-        //        //append the character to the end of the string
-        //        char character = hexdictionary[random];
-        //        hex[y] = character;
-        //    }
-        //    //convert the array to a string to send
-        //    string color = hex[0].ToString() + hex[1].ToString() + hex[2].ToString() + hex[3].ToString() + hex[4].ToString() + hex[5].ToString() + hex[6].ToString();
-        //    return color;
-        //}
-        //uses the random generated in random color 
-
 
         //uses the random generated by random color to create a random hexidecimal color string to return 
         public static string HexidecimalRandom(Random r)
@@ -300,36 +284,6 @@
             return string.Format("#{0:X6}", r.Next(0x1000000));
 
         }
-        //public static string[] CheckDuplicates(string[] colors)
-        //{
-        //    string[] noduplicates =  new string[colors.Length]; // create a string array for no duplicates
-        //    HashSet<string> check = new HashSet<string>(); //create a hash set for the add feature
-        //    foreach(string color in colors) // for each color in the array passed in
-        //    {
-        //        NoDuplicates(check, color); //add the element to the hash set if there are no duplicates
-        //    }
-        //    int x = 0;
-        //    foreach(string color in check)
-        //    {
-        //        noduplicates[x] = color;
-        //        x++;
-        //    }
-        //    //return the populated list of strings
-        //    return noduplicates;
-        //}
 
-       //public static HashSet<string> NoDuplicates(HashSet<string> checkDuplicates,string color)
-       // {
-                        
-       //     //if the hash set cannot add the color
-       //     if (checkDuplicates.Add(color) == false)
-       //     {
-       //         color = HexidecimalRandom(); //roll
-       //         NoDuplicates(checkDuplicates,color); //try again
-       //     }
-            
-
-       //     return checkDuplicates;
-       // }
     }
 }

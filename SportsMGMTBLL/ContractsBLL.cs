@@ -7,7 +7,9 @@
     using System.Text;
     using System.Threading.Tasks;
     using SportsMGMTDataAccess;
-    public class ContractsBLL
+    using Interfaces.IBusinessLogic;
+
+    public class ContractsBLL:IContracts
     {
         //call the DA layer to Read contracts and store in a list
         public List<Contracts> GetContracts()

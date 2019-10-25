@@ -12,7 +12,7 @@ namespace SportsMGMTDataAccess
     //Establishes connection for CRUD Practice Objects
     public class PracticeDataAccess : IPracticeDataAccess
     {
-        public string Connection = ConfigurationManager.ConnectionStrings["Sports"].ConnectionString;
+        public string Connection = AppSettings.Default.ConnectionString;
         //Get a List of Practices
         public List<Practice>GetPractice()
         {

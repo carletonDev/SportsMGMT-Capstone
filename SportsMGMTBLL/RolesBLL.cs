@@ -2,6 +2,7 @@
 
 namespace SportsMGMTBLL
 {
+    using Interfaces.IBusinessLogic;
     using SportsMGMTCommon;
     using SportsMGMTDataAccess;
     using System;
@@ -9,7 +10,7 @@ namespace SportsMGMTBLL
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-    public  class RolesBLL
+    public  class RolesBLL:IRole
     {
         //CRUD BLL for ROLES only Read actually implemented 
         //Populate a list of the roles

@@ -11,7 +11,7 @@ namespace SportsMGMTDataAccess
     using System.Data.SqlClient;
     public class TeamDataAccess:ITeamDataAccess
     {
-        public string Connection = ConfigurationManager.ConnectionStrings["Sports"].ConnectionString;
+        public string Connection = AppSettings.Default.ConnectionString;
         //Uses the stored procedure Get teams to get the current Teams stored in the database
         public List<Team> GetTeams()
         {

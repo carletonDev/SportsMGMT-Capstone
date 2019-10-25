@@ -12,7 +12,7 @@ namespace SportsMGMTDataAccess
     //creates the connection for contracts  to CRUD
     public class ContractsDataAccess:IContractsDataAccess
     {
-        public string Connection = ConfigurationManager.ConnectionStrings["Sports"].ConnectionString;
+        public string Connection = AppSettings.Default.ConnectionString;
         //Store all contracts in the database in a list
         public List<Contracts> GetContracts()
         {

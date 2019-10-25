@@ -49,21 +49,6 @@ namespace SportsMGMTUnitTest
         }
 
         [TestMethod]
-        public void UpdateGameScore()
-        {
-            //Arrange
-            //Get a list of Games
-            GameBLL gameBLL = new GameBLL();
-            List<Game> getGames = gameBLL.GetGames();
-            //Populate a game object with the updated Fame
-            Game game = getGames.Find(m => m.EndTime == Convert.ToDateTime("6/28/2019 5:00PM"));
-            game.HomeTeamScore = 107;
-            gameBLL.UpdateGameScore(game);
-            List<Game> checkGames = gameBLL.GetGames();
-            //Assert the Game Updated correctly
-            Assert.IsTrue(checkGames.Exists(m => m.HomeTeamScore == 107));
-        }
-        [TestMethod]
         public void UpdateGame()
         {
             //Arrange

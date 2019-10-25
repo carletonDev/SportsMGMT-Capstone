@@ -9,7 +9,9 @@ namespace SportsMGMTBLL
     using System.Text;
     using System.Threading.Tasks;
     using SportsMGMTDataAccess;
-    public class GameBLL
+    using Interfaces.IBusinessLogic;
+
+    public class GameBLL:IGame
     {
         //CRUD BLL For Games
         public List<Game> GetGames()

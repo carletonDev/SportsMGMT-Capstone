@@ -1,0 +1,12 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="SportsMGMTDataAccess" GeneratedClassName="AppSettings">
+  <Profiles />
+  <Settings>
+    <Setting Name="blob" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">DefaultEndpointsProtocol=https;AccountName=sportsappexceptions;AccountKey=f34SMxD/59nQfbcDm9agxMfc2zcy7YIfCsSvr/IpOTSdNMBaafTvjCTzAg5lBHuik+xjl5XWHadv5s5IF/6QGw==;EndpointSuffix=core.windows.net</Value>
+    </Setting>
+    <Setting Name="ConnectionString" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Server=tcp:carletonserver.database.windows.net,1433;Initial Catalog=SportsMGMTCapStone;Persist Security Info=False;User ID=carl;Password=5611S@ddle;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

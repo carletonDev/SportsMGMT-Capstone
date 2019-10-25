@@ -1,6 +1,7 @@
 ﻿
 namespace SportsMGMTBLL
 {
+    using Interfaces.IBusinessLogic;
     using SportsMGMTCommon;
     using SportsMGMTDataAccess;
     using System;
@@ -8,7 +9,7 @@ namespace SportsMGMTBLL
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-    public class UsersBLL
+    public class UsersBLL:IUser
     {
         //Method to Insert a new user
         public bool InsertNewUser(Users user)

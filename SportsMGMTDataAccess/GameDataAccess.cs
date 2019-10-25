@@ -13,7 +13,7 @@ namespace SportsMGMTDataAccess
     //connection to CRUD games
     public class GameDataAccess:IGameDataAccess
     {
-        public string Connection = ConfigurationManager.ConnectionStrings["Sports"].ConnectionString;
+        public string Connection = AppSettings.Default.ConnectionString;
         //Read Games
         public List<Game>GetGames()
         {

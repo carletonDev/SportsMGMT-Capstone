@@ -22,19 +22,7 @@ namespace SportsMGMTUnitTest
             //Assert
             Assert.IsTrue(role.RoleID ==1) ;
         }
-        [TestMethod]
-        public void InsertRole()
-        {
-            //Arrange
-            RolesBLL rolesBLL = new RolesBLL();
-            //Act
-            Roles role = new Roles();
-            role.RoleType = "TestInsert";
-            rolesBLL.InsertRole(role);
-            List<Roles> checkRole = rolesBLL.GetRoles();
-            //Assert
-            Assert.IsTrue(checkRole.Exists(m=>m.RoleType=="TestInsert"));
-        }
+
         //Test if the check role access returns the users role
         [TestMethod]
         public void CheckRoleAccess()
@@ -61,26 +49,6 @@ namespace SportsMGMTUnitTest
             //Assert
             Assert.IsFalse(checkRole.Exists(m => m.RoleType == "TestInsert"));
         }
-        [TestMethod]
-        public void UpdateRolesbyName()
-        {
-            //Arrange
-            UsersBLL usersBLL = new UsersBLL();
-            RolesBLL rolesBLL = new RolesBLL();
-            //Act-Find Bob biggum and Coach role
-            List<Roles> getRole = rolesBLL.GetRoles();
-            Roles role = getRole.Find(m => m.RoleType == "Coach");
-            List<Users> getUsers = usersBLL.GetUsers();
-            Users user = getUsers.Find(m => m.FullName == "Bob Biggum");
-            //Assign Bob Biggum new Role
-            rolesBLL.UpdateRolesByName(user, role);
-            //get new check list of users
-            List<Users> checkUsers = usersBLL.GetUsers();
-            //Find Bob Biggum again
-            Users users=checkUsers.Find(m => m.FullName == "Bob Biggum");
 
-            //Assert that Bob Biggum has been updated to coach role
-            Assert.IsTrue(users.RoleID == role.RoleID);
-        }
     }
 }

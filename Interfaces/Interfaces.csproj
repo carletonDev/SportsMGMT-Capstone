@@ -5,10 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="IBusinessLogic\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\SportsMGMTCommon\SportsMGMTCommon.csproj" />
   </ItemGroup>
 

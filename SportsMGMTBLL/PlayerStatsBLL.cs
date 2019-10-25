@@ -7,9 +7,10 @@ namespace SportsMGMTBLL
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+    using Interfaces.IBusinessLogic;
     using SportsMGMTCommon;
     using SportsMGMTDataAccess;
-    public class PlayerStatsBLL
+    public class PlayerStatsBLL:IPlayerStats
     {
         //CRUD BLL for PLAYER Stats
         public List<PlayerStats> GetStats()

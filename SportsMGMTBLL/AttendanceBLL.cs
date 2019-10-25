@@ -7,31 +7,35 @@
     using System.Text;
     using System.Threading.Tasks;
     using SportsMGMTDataAccess;
-    public class AttendanceBLL
-    {
+    using Interfaces.IBusinessLogic;
+    using Interfaces.IDataAccess;
 
+    public class AttendanceBLL:IAttendanceBLL
+    {
+        IAttendanceDataAccess attendance;
+
+        public AttendanceBLL(IAttendanceDataAccess access)
+        {
+            attendance = access;
+        }
         //Inserts a new Game Attendance
         public void CreateGameAttance(GameAttendance gameAttended)
         {
-            AttendanceDataAccess attendanceDataAccess = new AttendanceDataAccess();
-            attendanceDataAccess.CreateGameAttance(gameAttended);
+            attendance.CreateGameAttance(gameAttended);
         }
         //Inserts a new Practice Attendance
         public void CreatePracticeAttendance(PracticeAttended practiceAttended)
         {
-            AttendanceDataAccess attendanceDataAccess = new AttendanceDataAccess();
-            attendanceDataAccess.CreatePracticeAttendance(practiceAttended);
+           attendance.CreatePracticeAttendance(practiceAttended);
         }
         public List<PracticeAttended> getPracticeAttendaned(int id)
         {
-            AttendanceDataAccess attendance = new AttendanceDataAccess();
             List<PracticeAttended> practice = attendance.getPracticeAttendaned(id);
             return practice;
         }
         //Get a List of All users from that team that has or hasnt been assigned game attendance values
         public List<GameAttendance> getGameAttendaned()
         {
-            AttendanceDataAccess attendance = new AttendanceDataAccess();
             List<GameAttendance> games = attendance.getGameAttendance();
             return games;
         }

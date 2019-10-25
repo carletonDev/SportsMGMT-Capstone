@@ -2,6 +2,7 @@
 
 namespace SportsMGMTBLL
 {
+    using Interfaces.IDataAccess;
     using SportsMGMTCommon;
     using SportsMGMTDataAccess;
     using System;
@@ -9,7 +10,7 @@ namespace SportsMGMTBLL
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-    public class ExceptionLogBLL
+    public class ExceptionLogBLL:IExceptions
     {
         //Create and Read Exceptions only Create actually implemented
         public bool StoreExceptions(Exception Ex)

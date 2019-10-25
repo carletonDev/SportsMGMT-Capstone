@@ -10,7 +10,7 @@
     public class UsersDataAccess:IUsersDataAcesss
     {//CRUD users Data Access
 
-        public string Connection = ConfigurationManager.ConnectionStrings["Sports"].ConnectionString;
+        public string Connection = AppSettings.Default.ConnectionString;
         //Method that adds users to the Database without team
         //Create Users
         public void InsertUser(Users insert)
