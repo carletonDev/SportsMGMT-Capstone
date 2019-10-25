@@ -1,4 +1,5 @@
-﻿using SportsMGMTBLL;
+﻿using Interfaces.IBusinessLogic;
+using SportsMGMTBLL;
 using SportsMGMTCommon;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,17 @@ namespace SportsMGMTApp.Models
 {
     public class UserModel
     {
+        static IUser usersBLL;
+        static ITeam teamBLL;
+        static IRole rolesBLL;
+        static IContracts contractsBLL;
+        public UserModel(IUser user,ITeam teams,IRole role,IContracts contracts)
+        {
+            usersBLL = user;
+            teamBLL = teams;
+            rolesBLL = role;
+            contractsBLL = contracts;
+        }
 
         public int UserID { get; set; }
 
@@ -24,8 +36,6 @@ namespace SportsMGMTApp.Models
         //finds who midified the user last for formatting
         public static string WhoModified(int id)
         {
-            UsersBLL usersBLL = new UsersBLL();
-
                 string name = "";
             if (id!=0)
             {
@@ -41,7 +51,7 @@ namespace SportsMGMTApp.Models
         //Format the Value of Team
         public static string TeamName(int id)
         {
-            TeamBLL teamBLL = new TeamBLL();
+
             string Name = "";
             if (id == 0)
             {
@@ -57,7 +67,6 @@ namespace SportsMGMTApp.Models
         //find role name
         public static string RoleName(int id)
         {
-            RolesBLL rolesBLL = new RolesBLL();
             string Name ="";
             if (id == 0)
             {
@@ -71,26 +80,23 @@ namespace SportsMGMTApp.Models
         {
             get
             {
-                TeamBLL getTeam = new TeamBLL();
-                return new SelectList(getTeam.GetTeams(), "TeamID", "TeamName");
+
+                return new SelectList(teamBLL.GetTeams(), "TeamID", "TeamName");
             }
         }
 
 
         public IEnumerable<SelectListItem> GetRoles { get {
-                RolesBLL getRoles = new RolesBLL();
-                return new SelectList(getRoles.GetRoles(), "RoleID", "RoleType");
+                return new SelectList(rolesBLL.GetRoles(), "RoleID", "RoleType");
             } }
 
         public IEnumerable<SelectListItem> GetContract {
             get {
-                ContractsBLL contractsBLL = new ContractsBLL();
                 return new SelectList(contractsBLL.GetContracts(), "ContractID", "ContractType");
             } }
         //Finds the name of the contracts
         public static string FindContractName(int id)
         {
-            ContractsBLL contractsBLL = new ContractsBLL();
             string Name = "";
             if(id == 0)
             {

@@ -1,4 +1,5 @@
-﻿using SportsMGMTBLL;
+﻿using Interfaces.IBusinessLogic;
+using SportsMGMTBLL;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -10,9 +11,14 @@ namespace SportsMGMTApp.Models
 {
     public class PlayerStatsModel
     {
+        IUser usersBLL;
+        public PlayerStatsModel(IUser user)
+        {
+            usersBLL = user;
+
+        }
         public IEnumerable<SelectListItem> GetUsers(int teamid)
         {
-            UsersBLL usersBLL = new UsersBLL();
 
             return new SelectList(usersBLL.GetUsers().FindAll(m => m.TeamID == teamid), "UserID", "FullName");
 

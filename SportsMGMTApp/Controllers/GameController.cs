@@ -15,9 +15,11 @@ namespace SportsMGMTApp.Controllers
     public class GameController : Controller
     {
         IGame gameBLL;
-        public GameController(IGame games)
+        ITeam team;
+        public GameController(IGame games,ITeam teams)
         {
             gameBLL = games;
+            team = teams;
         }
         // Create Post
         [HttpPost]
@@ -76,7 +78,7 @@ namespace SportsMGMTApp.Controllers
         [MustBeInRole(Roles = "Admin")]
         public ActionResult Game()
         {
-            GameModel model = new GameModel();
+            GameModel model = new GameModel(gameBLL,team);
             return View(model);
         }
         //Update Get
@@ -87,7 +89,7 @@ namespace SportsMGMTApp.Controllers
         public ActionResult UpdateGame(int id)
         {
 
-            GameModel gameModel = new GameModel();
+            GameModel gameModel = new GameModel(gameBLL,team);
             List<Game> getGame = gameModel.GetGames();
             gameModel.game = getGame.Find(m => m.GameID == id);
             return View(gameModel);
@@ -121,7 +123,7 @@ namespace SportsMGMTApp.Controllers
         [MustBeInRole(Roles = "Admin,Coach,Player")]
         public ActionResult ListGame()
         {
-            GameModel gameModel = new GameModel();
+            GameModel gameModel = new GameModel(gameBLL,team);
             List<Game> getGames = gameModel.GetGames();
             return View(getGames);
         }
@@ -132,7 +134,7 @@ namespace SportsMGMTApp.Controllers
         public ActionResult DeleteGame(int id)
         {
 
-            GameModel gameModel = new GameModel(); // create a new model
+            GameModel gameModel = new GameModel(gameBLL,team); // create a new model
             List<Game> getGame = gameModel.GetGames(); //store a list of games
             gameModel.game = getGame.Find(m => m.GameID == id); //store in the model objects common game object the object from the list
             return View(gameModel);

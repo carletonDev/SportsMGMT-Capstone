@@ -15,11 +15,12 @@
     {
         IAttendanceBLL attendance;
         IPractice practiceBLL;
-
-        public PracticeController(IAttendanceBLL attend,IPractice practice)
+        IUser users;
+        public PracticeController(IAttendanceBLL attend,IPractice practice, IUser user)
         {
             attendance = attend;
             practiceBLL = practice;
+            users = user;
         }
         //create practice
         [HttpGet]
@@ -74,7 +75,7 @@
         public ActionResult UpdatePractice(int id)
         {
             //Make a new View Model
-            PracticeModel practiceModel = new PracticeModel();
+            PracticeModel practiceModel = new PracticeModel(users);
 
             //find the current practice object in database and store in object
             Practice practice = practiceBLL.GetPractice().Find(m => m.PracticeID == id);
@@ -121,7 +122,7 @@
         public ActionResult DeletePractice (int id)
         {
             //Make a new View Model
-            PracticeModel practiceModel = new PracticeModel();
+            PracticeModel practiceModel = new PracticeModel(users);
 
             //find the current practice object in database and store in object
             Practice practice = practiceBLL.GetPractice().Find(m => m.PracticeID == id);
@@ -164,7 +165,7 @@
         [MustBeInRole(Roles="Admin,Coach")]
         public ActionResult TwoLevelPractice()
         {
-            PracticeModel practice = new PracticeModel();
+            PracticeModel practice = new PracticeModel(users);
             var user = Session["Users"] as Users;
             practice.GetUsers(user.TeamID);
             return View(practice);

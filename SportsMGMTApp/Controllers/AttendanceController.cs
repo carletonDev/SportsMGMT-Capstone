@@ -144,10 +144,8 @@ namespace SportsMGMTApp.Controllers
         [MustBeInRole(Roles = "Admin,Coach")]
         public ActionResult CreatePracticeAttendance(int id)
         {
-            PracticeAttendanceModel model = new PracticeAttendanceModel
-            {
-                PracticeID = id
-            };
+            PracticeAttendanceModel model = new PracticeAttendanceModel(usersBLL, practiceBLL);
+            model.PracticeID = id;
 
             return View(model);
         }

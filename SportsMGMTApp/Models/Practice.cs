@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Interfaces.IBusinessLogic;
 using SportsMGMTBLL;
 using SportsMGMTCommon;
 
@@ -11,6 +12,11 @@ namespace SportsMGMTApp.Models
 {
     public class PracticeModel
     {
+        IUser usersBLL;
+        public PracticeModel(IUser user)
+        {
+            usersBLL = user;
+        }
         [MaxLength(100,ErrorMessage ="Max characters exceeded")]
         public string PracticeType { get; set; }
         [Required]
@@ -21,7 +27,6 @@ namespace SportsMGMTApp.Models
         public Practice practice { get; set; }
         public IEnumerable<SelectListItem> GetUsers(int teamid)
         {
-            UsersBLL usersBLL = new UsersBLL();
 
             return new SelectList(usersBLL.GetUsers().FindAll(m => m.TeamID == teamid), "UserID", "FullName");
 

@@ -52,7 +52,7 @@
         [MustBeInRole(Roles="Admin,Coach")]
         public ActionResult UpdatePlayerStats(int id)
         {
-            PlayerStatsModel player = new PlayerStatsModel();
+            PlayerStatsModel player = new PlayerStatsModel(usersBLL);
 
             PlayerStats playerUpdated = playerStats.GetStats().Find(m => m.StatID == id);
             player.StatID = playerUpdated.StatID;
@@ -119,7 +119,7 @@
         [MustBeInRole(Roles="Admin,Coach")]
         public ActionResult CreatePlayerStats(int id)
         {
-            PlayerStatsModel playerStats = new PlayerStatsModel();
+            PlayerStatsModel playerStats = new PlayerStatsModel(usersBLL);
             playerStats.GameID = id;
             return View(playerStats);
         }

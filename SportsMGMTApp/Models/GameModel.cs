@@ -1,4 +1,5 @@
-﻿using SportsMGMTBLL;
+﻿using Interfaces.IBusinessLogic;
+using SportsMGMTBLL;
 using SportsMGMTCommon;
 using System;
 using System.Collections.Generic;
@@ -11,23 +12,29 @@ namespace SportsMGMTApp.Models
 {
     public class GameModel
     {
+       static IGame Game;
+       static ITeam teams;
+        public GameModel(IGame games,ITeam team)
+        {
+            Game = games;
+            teams = team;
+        }
         public List<Team> GetTeamName()
         {
-            TeamBLL Teams = new TeamBLL();
-            List<Team> getTeam = Teams.GetTeams();
+
+            List<Team> getTeam = teams.GetTeams();
 
             return getTeam; 
         }
         //Gets Name of Team based on Foreign Keys can be called without constructing it
         public static string GetTeamNameString(int id)
         {
-            GameModel gameModel = new GameModel();
+            GameModel gameModel = new GameModel(Game,teams);
             Team team = gameModel.GetTeamName().Find(m => m.TeamID == id);
             return team.TeamName;
         }
         public List<Game> GetGames()
         {
-            GameBLL Game = new GameBLL();
             List<Game> getGame = Game.GetGames();
 
             return getGame;
