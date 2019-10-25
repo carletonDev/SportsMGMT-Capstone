@@ -15,9 +15,9 @@ namespace SportsMGMTApp.Controllers
     public class GameController : Controller
     {
         IGame gameBLL;
-        public GameController()
+        public GameController(IGame games)
         {
-            gameBLL = new GameBLL(Resolve.Game(), Resolve.Exceptions());
+            gameBLL = games;
         }
         // Create Post
         [HttpPost]

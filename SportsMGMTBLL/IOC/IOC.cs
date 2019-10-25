@@ -19,7 +19,7 @@ namespace SportsMGMTBLL.IOC
             container.Register(
                 Component.For<IAttendanceDataAccess>().ImplementedBy<AttendanceDataAccess>(),
                 Component.For<IContractsDataAccess>().ImplementedBy<ContractsDataAccess>(),
-                Component.For<IExceptions>().ImplementedBy<ExeceptionDataAccess>().ImplementedBy<ExceptionLogBLL>(),
+                Component.For<IExceptions>().ImplementedBy<ExeceptionDataAccess>(),
                 Component.For<IGameDataAccess>().ImplementedBy<GameDataAccess>(),
                 Component.For<IPlayerStatsDA>().ImplementedBy<PlayerStatsDA>(),
                 Component.For<IPracticeDataAccess>().ImplementedBy<PracticeDataAccess>(),
@@ -33,7 +33,8 @@ namespace SportsMGMTBLL.IOC
                 Component.For<IPlayerStats>().ImplementedBy<PlayerStatsBLL>(),
                 Component.For<IRole>().ImplementedBy<RolesBLL>(),
                 Component.For<IUser>().ImplementedBy<UsersBLL>(),
-                Component.For<ITeam>().ImplementedBy<TeamBLL>()
+                Component.For<ITeam>().ImplementedBy<TeamBLL>(),
+                Component.For<IExceptionsBLL>().ImplementedBy<ExceptionLogBLL>()
                 );
         }
     }

@@ -16,10 +16,10 @@
         IAttendanceBLL attendance;
         IPractice practiceBLL;
 
-        public PracticeController()
+        public PracticeController(IAttendanceBLL attend,IPractice practice)
         {
-            attendance = new AttendanceBLL(Resolve.Attendance());
-            practiceBLL = new PracticeBLL(Resolve.Practice());
+            attendance = attend;
+            practiceBLL = practice;
         }
         //create practice
         [HttpGet]

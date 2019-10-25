@@ -2,15 +2,10 @@
 
 namespace SportsMGMTBLL
 {
+    using Interfaces.IBusinessLogic;
     using Interfaces.IDataAccess;
-    using SportsMGMTCommon;
-    using SportsMGMTDataAccess;
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    public class ExceptionLogBLL:IExceptions
+    public class ExceptionLogBLL:IExceptionsBLL
     {
         //Create and Read Exceptions only Create actually implemented
         IExceptions ExceptionDA;

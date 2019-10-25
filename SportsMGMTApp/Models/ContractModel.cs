@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Interfaces.IBusinessLogic;
 using SportsMGMTBLL;
 using SportsMGMTCommon;
 
@@ -11,6 +12,11 @@ namespace SportsMGMTApp.Models
 {
     public class ContractModel
     {
+        IUser usersBLL;
+        public ContractModel(IUser user)
+        {
+            usersBLL = user;
+        }
         [Key]
         public int ContractID { get; set; }
         [Required]
@@ -26,7 +32,6 @@ namespace SportsMGMTApp.Models
 
         public IEnumerable<SelectListItem> GetUsers(int teamid)
         {
-            UsersBLL usersBLL = new UsersBLL();
 
             return new SelectList(usersBLL.GetUsers().FindAll(m => m.TeamID == teamid), "UserID", "FullName");
 

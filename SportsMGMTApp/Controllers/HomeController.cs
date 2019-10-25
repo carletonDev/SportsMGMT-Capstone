@@ -22,13 +22,13 @@ namespace SportsMGMTApp.Controllers
         IUser userBLL;
         ITeam teamBLL;
         IRole rolesBLL;
-       static IExceptions exceptionLog;
-        public HomeController()
+       static IExceptionsBLL exceptionLog;
+        public HomeController(IUser user,ITeam team,IRole roles,IExceptionsBLL ex)
         {
-            userBLL = new UsersBLL(Resolve.Users(), Resolve.Exceptions());
-            teamBLL = new TeamBLL(Resolve.Team());
-            rolesBLL = new RolesBLL(Resolve.Roles());
-            exceptionLog = new ExceptionLogBLL(Resolve.Exceptions());
+            userBLL = user;
+            teamBLL = team;
+            rolesBLL = roles;
+            exceptionLog = ex;
         }
         //returns the home page for admins with a model value of all users with no contracts
         public ActionResult DashboardAdmin()

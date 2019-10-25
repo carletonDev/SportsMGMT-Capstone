@@ -42,6 +42,7 @@ namespace SportsMGMTBLL.IOC
             container.Resolve<IUser>();
             container.Resolve<ITeam>();
             container.Resolve<IRole>();
+            container.Resolve<IExceptionsBLL>()
         }
         public static IAttendanceDataAccess Attendance()
         {

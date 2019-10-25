@@ -12,9 +12,11 @@
     public class ContractController : Controller
     {
         IContracts contractsBLL;
-        public ContractController()
+        IUser users;
+        public ContractController(IContracts contracts, IUser user)
         {
-            contractsBLL = new ContractsBLL(Resolve.Contracts(), Resolve.Exceptions());
+            contractsBLL = contracts;
+            users = user;
         }
         //list all contracts
         [HttpGet]
@@ -40,7 +42,7 @@
         {
         
             //create model
-            ContractModel contract = new ContractModel();
+            ContractModel contract = new ContractModel(users);
 
             contract.Contract = contractsBLL.GetContracts().Find(m => m.ContractID == id);
 
@@ -132,7 +134,7 @@
 
             Contracts contracts = contractsBLL.GetContracts().Find(m => m.ContractID == id);
 
-            ContractModel contractModel = new ContractModel();
+            ContractModel contractModel = new ContractModel(users);
 
             contractModel.ContractID = contracts.ContractID;
             contractModel.ContractType = contracts.ContractType;
