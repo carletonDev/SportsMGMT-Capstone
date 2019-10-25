@@ -8,9 +8,19 @@
     using SportsMGMTBLL;
     using SportsMGMTApp.Mapper;
     using System;
+    using SportsMGMTBLL.IOC;
+    using Interfaces.IBusinessLogic;
 
     public class PracticeController : Controller
     {
+        IAttendanceBLL attendance;
+        IPractice practiceBLL;
+
+        public PracticeController()
+        {
+            attendance = new AttendanceBLL(Resolve.Attendance());
+            practiceBLL = new PracticeBLL(Resolve.Practice());
+        }
         //create practice
         [HttpGet]
         [MustBeInRole(Roles = "Admin,Coach")]
@@ -31,8 +41,7 @@
                 PracticeMapper practiceMap = new PracticeMapper();
                 Practice newPractice = practiceMap.PracticeMap(practice);
                 newPractice.TeamID =user.TeamID;
-                //call BLL
-                PracticeBLL practiceBLL = new PracticeBLL();
+         
                 practiceBLL.CreatePractice(newPractice);
                 List<Practice> getPractice = practiceBLL.GetPractice();
 
@@ -52,8 +61,7 @@
         [MustBeInRole(Roles="Admin,Coach")]
         public ActionResult ListPractice()
         {
-            //create a new practice object
-            PracticeBLL practiceBLL = new PracticeBLL();
+
             //store session variables for team id 
             var users = Session["Users"] as Users;
             //find all practices related to that coach or admins team
@@ -67,8 +75,7 @@
         {
             //Make a new View Model
             PracticeModel practiceModel = new PracticeModel();
-            //create a new practice BLL
-            PracticeBLL practiceBLL = new PracticeBLL();
+
             //find the current practice object in database and store in object
             Practice practice = practiceBLL.GetPractice().Find(m => m.PracticeID == id);
             //set value to model property object practice
@@ -82,8 +89,7 @@
         {
             if (ModelState.IsValid)
             {
-                //Create a new practice BLL
-                PracticeBLL practiceBLL = new PracticeBLL();
+
                 //Find the current object in the database and store for check later
                 Practice practice = practiceBLL.GetPractice().Find(m => m.PracticeID == model.practice.PracticeID);
                 //perform update
@@ -116,8 +122,7 @@
         {
             //Make a new View Model
             PracticeModel practiceModel = new PracticeModel();
-            //create a new practice BLL
-            PracticeBLL practiceBLL = new PracticeBLL();
+
             //find the current practice object in database and store in object
             Practice practice = practiceBLL.GetPractice().Find(m => m.PracticeID == id);
             //set value to model property object practice
@@ -129,8 +134,7 @@
         [MustBeInRole(Roles = "Admin,Coach")]
         public ActionResult DeletePractice (PracticeModel model)
         {
-            //Create a new practice BLL
-            PracticeBLL practiceBLL = new PracticeBLL();
+
             //Find the current object in the database and store for check later
             Practice practice = practiceBLL.GetPractice().Find(m => m.PracticeID == model.practice.PracticeID);
 
@@ -206,11 +210,11 @@
                 absent.UserID = practice.UserID;
                 absent.Attended =practice.Check;
                 createPractice.TeamID = users.TeamID;
-                AttendanceBLL attendance = new AttendanceBLL();
-                PracticeBLL insertPractice = new PracticeBLL();
 
-                insertPractice.CreatePractice(createPractice);
-                List<Practice> check = insertPractice.GetPractice();
+
+
+                practiceBLL.CreatePractice(createPractice);
+                List<Practice> check = practiceBLL.GetPractice();
                 check.Reverse();
                 Practice checkinsert = check.Find(m => m.PracticeType == createPractice.PracticeType && m.StartTime==createPractice.StartTime &&m.EndTime==createPractice.EndTime);
                 absent.PracticeID = checkinsert.PracticeID;

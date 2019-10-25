@@ -13,23 +13,36 @@ namespace SportsMGMTApp.Controllers
     using System.Net;
     using SportsMGMTApp.Filters;
     using System.Text;
+    using Interfaces.IBusinessLogic;
+    using SportsMGMTBLL.IOC;
+    using Interfaces.IDataAccess;
+
     public class HomeController : Controller
     {
+        IUser userBLL;
+        ITeam teamBLL;
+        IRole rolesBLL;
+       static IExceptions exceptionLog;
+        public HomeController()
+        {
+            userBLL = new UsersBLL(Resolve.Users(), Resolve.Exceptions());
+            teamBLL = new TeamBLL(Resolve.Team());
+            rolesBLL = new RolesBLL(Resolve.Roles());
+            exceptionLog = new ExceptionLogBLL(Resolve.Exceptions());
+        }
         //returns the home page for admins with a model value of all users with no contracts
         public ActionResult DashboardAdmin()
         {
-            UsersBLL usersBLL = new UsersBLL();
-            List<Users> getUsers = usersBLL.GetUsers().FindAll(m => m.ContractID == 0).FindAll(m=>m.TeamID==0);
-            getUsers.AddRange(usersBLL.GetUsers().FindAll(m => m.ContractID == 2017).FindAll(m => m.TeamID == 1034));
+            List<Users> getUsers = userBLL.GetUsers().FindAll(m => m.ContractID == 0).FindAll(m=>m.TeamID==0);
+            getUsers.AddRange(userBLL.GetUsers().FindAll(m => m.ContractID == 2017).FindAll(m => m.TeamID == 1034));
 
             return View(getUsers);
         }
         //returns the home page of coaches  with coach layout same model passed of users with not teams
         public ActionResult DashboardCoach()
         {
-            UsersBLL usersBLL = new UsersBLL();
-            List<Users> getUsers = usersBLL.GetUsers().FindAll(m => m.ContractID == 0).FindAll(m => m.TeamID == 0);
-            getUsers.AddRange(usersBLL.GetUsers().FindAll(m => m.ContractID == 2017).FindAll(m => m.TeamID == 1034));
+            List<Users> getUsers = userBLL.GetUsers().FindAll(m => m.ContractID == 0).FindAll(m => m.TeamID == 0);
+            getUsers.AddRange(userBLL.GetUsers().FindAll(m => m.ContractID == 2017).FindAll(m => m.TeamID == 1034));
             return View(getUsers);
         }
 
@@ -94,8 +107,8 @@ namespace SportsMGMTApp.Controllers
         public ActionResult AssignContract(int id)
         {
             //Instantiate a new users BLL and find the user to modify store in the model the user who has modified the users table from session obj
-            UsersBLL usersBLL = new UsersBLL();
-            Users user = usersBLL.GetUsers().Find(m => m.UserID == id);
+
+            Users user = userBLL.GetUsers().Find(m => m.UserID == id);
             //create a new user model
             UserModel userModel = new UserModel();
             //place the user from id into user model
@@ -110,9 +123,9 @@ namespace SportsMGMTApp.Controllers
             if (ModelState.IsValid)
             {
                 //instantiate a user bll object
-                UsersBLL usersBLL = new UsersBLL();
+
                 //find the original user information
-                Users user = usersBLL.GetUsers().Find(m => m.UserID == model.user.UserID);
+                Users user = userBLL.GetUsers().Find(m => m.UserID == model.user.UserID);
              
                 //store the modifying user in a var
                 var users = Session["Users"] as Users;
@@ -142,7 +155,6 @@ namespace SportsMGMTApp.Controllers
                 }
                 else
                 {
-                    TeamBLL teamBLL = new TeamBLL();
                     model.user.UserModified = users.UserID; //set who modified user last
                     if(model.TeamID == 0)
                     {
@@ -161,8 +173,7 @@ namespace SportsMGMTApp.Controllers
                 else if (users.RoleID != 1)
                 {
 
-                    //Assign user player role as default
-                    RolesBLL rolesBLL = new RolesBLL();
+
                     model.user.RoleID = rolesBLL.GetRoles().Find(m => m.RoleType == "Player").RoleID;
                 }
                 if(model.user.ContractStart == DateTime.MinValue)
@@ -176,7 +187,7 @@ namespace SportsMGMTApp.Controllers
                     ViewBag.Message = "You have already updated the user with these values";
                     return View(model);
                 }
-                usersBLL.UpdateUser(model.user);
+                userBLL.UpdateUser(model.user);
                 //check if update successful
                 if (user == model.user) // if the model user is still the same as user before modify
                 {
@@ -234,7 +245,6 @@ namespace SportsMGMTApp.Controllers
             }
             catch(Exception ep)
             {
-                ExceptionLogBLL exceptionLog = new ExceptionLogBLL();
                 exceptionLog.StoreExceptions(ep);
             }
 

@@ -9,9 +9,16 @@ namespace SportsMGMTApp.Controllers
     using SportsMGMTBLL;
     using SportsMGMTCommon;
     using System;
+    using Interfaces.IBusinessLogic;
+    using SportsMGMTBLL.IOC;
 
     public class GameController : Controller
     {
+        IGame gameBLL;
+        public GameController()
+        {
+            gameBLL = new GameBLL(Resolve.Game(), Resolve.Exceptions());
+        }
         // Create Post
         [HttpPost]
         [MustBeLoggedIn]
@@ -40,8 +47,6 @@ namespace SportsMGMTApp.Controllers
                 GameMapper mapGame = new GameMapper();
                 Game addGame = mapGame.MapGame(game);
                 
-                //Add Game
-                GameBLL gameBLL = new GameBLL();
                 if (addGame.HomeTeam == addGame.AwayTeam)
                 {
                     ViewBag.Message = "Home Team Cannot Be the Same as Away Team?";
@@ -96,7 +101,6 @@ namespace SportsMGMTApp.Controllers
 
             if (ModelState.IsValid)
             {
-                GameBLL gameBLL = new GameBLL();
                 bool check = gameBLL.UpdateGame(model.game);
                 //Display Update successful if update occured
                 if (check)
@@ -140,7 +144,6 @@ namespace SportsMGMTApp.Controllers
         public ActionResult DeleteGame(GameModel model)
         {
            
-                GameBLL gameBLL = new GameBLL(); //create a new BLL object of game
                 Game game = model.GetGames().Find(m => m.GameID == model.game.GameID);
                 gameBLL.DeleteGame(model.game); // delete game by using the common object game in the model
                 List<Game> checkGame = model.GetGames(); //get a list of games curently

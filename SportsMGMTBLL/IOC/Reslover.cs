@@ -14,7 +14,7 @@ namespace SportsMGMTBLL.IOC
 {
     public static  class Resolve
     {
-        public static WindsorContainer Resolve()
+        public static WindsorContainer Resolver()
         {
             // application starts...
             var container = new WindsorContainer();

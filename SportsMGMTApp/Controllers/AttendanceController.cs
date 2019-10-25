@@ -16,12 +16,13 @@ namespace SportsMGMTApp.Controllers
         IAttendanceBLL attendance;
         IUser usersBLL;
         IPractice practiceBLL;
-
+        IGame gameBLL;
         public AttendanceController()
         {
             attendance = new AttendanceBLL(Resolve.Attendance());
             usersBLL = new UsersBLL(Resolve.Users(),Resolve.Exceptions());
             practiceBLL = new PracticeBLL(Resolve.Practice());
+            gameBLL = new GameBLL(Resolve.Game(), Resolve.Exceptions());
         }
         // GET: Attendance
         [HttpGet]
@@ -62,7 +63,6 @@ namespace SportsMGMTApp.Controllers
         public ActionResult ListGameAttendance()
         {
             var users = Session["Users"] as Users;
-            GameBLL gameBLL = new GameBLL();
             List<Game> getAllGame = gameBLL.GetGames().FindAll(m => m.AwayTeam == users.TeamID);
             getAllGame.AddRange(gameBLL.GetGames().FindAll(m => m.HomeTeam == users.TeamID));
 
@@ -74,8 +74,8 @@ namespace SportsMGMTApp.Controllers
         public ActionResult ListPracticeAttendance()
         {
             var Users=Session["Users"] as Users;
-            AttendanceBLL attendanceBLL = new AttendanceBLL();
-            List<PracticeAttended> practice = attendanceBLL.getPracticeAttendaned(Users.TeamID);
+
+            List<PracticeAttended> practice = attendance.getPracticeAttendaned(Users.TeamID);
 
             return View(practice);
         }
@@ -97,7 +97,6 @@ namespace SportsMGMTApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                AttendanceBLL attendance = new AttendanceBLL();
                 var user = Session["Users"] as Users;
                 GameAttendance gameAttendance = new GameAttendance
                 {
@@ -158,7 +157,6 @@ namespace SportsMGMTApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                AttendanceBLL attendance = new AttendanceBLL();
                 var user = Session["Users"] as Users;
                 PracticeAttended practice = new PracticeAttended
                 {

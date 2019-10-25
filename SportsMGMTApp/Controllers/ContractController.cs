@@ -6,15 +6,23 @@
     using SportsMGMTBLL;
     using SportsMGMTCommon;
     using SportsMGMTApp.Models;
+    using Interfaces.IBusinessLogic;
+    using SportsMGMTBLL.IOC;
+
     public class ContractController : Controller
     {
+        IContracts contractsBLL;
+        public ContractController()
+        {
+            contractsBLL = new ContractsBLL(Resolve.Contracts(), Resolve.Exceptions());
+        }
         //list all contracts
         [HttpGet]
         [MustBeInRole(Roles ="Admin,Coach")]
         public ActionResult ListContracts()
         {
-            //create BLL and model Object
-            ContractsBLL contractsBLL = new ContractsBLL();
+
+
             List<Contracts> getContracts = new List<Contracts>();
 
             //store List of Teams in Model
@@ -30,8 +38,7 @@
         [MustBeInRole(Roles="Admin")]
         public ActionResult UpdateContracts(int id)
         {
-            //create a new contract bll
-            ContractsBLL contractsBLL = new ContractsBLL();
+        
             //create model
             ContractModel contract = new ContractModel();
 
@@ -55,9 +62,6 @@
                 contractUpdate.ContractID = contract.ContractID;
                 contractUpdate.ContractType = contract.ContractType;
                 contractUpdate.Salary = contract.Salary;
-
-                //create BLL
-                ContractsBLL contractsBLL = new ContractsBLL();
                 Contracts contractCheck = contractsBLL.GetContracts().Find(m => m.ContractID == contract.ContractID);
                 contractsBLL.UpdateContract(contractUpdate);
 
@@ -94,7 +98,7 @@
         {
             if (ModelState.IsValid)
             {
-                ContractsBLL contractsBLL = new ContractsBLL();
+
                 Contracts createContract = new Contracts();
                 createContract.ContractType = contract.ContractType;
                 createContract.Salary = contract.Salary;
@@ -124,7 +128,7 @@
         [MustBeInRole(Roles = "Admin")]
         public ActionResult DeleteContract(int id)
         {
-            ContractsBLL contractsBLL = new ContractsBLL();
+
 
             Contracts contracts = contractsBLL.GetContracts().Find(m => m.ContractID == id);
 
@@ -141,8 +145,7 @@
         [MustBeInRole(Roles = "Admin")]
         public ActionResult DeleteContract(ContractModel contract)
         {
-            //create BLL
-            ContractsBLL contractsBLL = new ContractsBLL();
+
             //Find Object
             Contracts contracts = contractsBLL.GetContracts().Find(m => m.ContractID == contract.ContractID);
             //Delete Object
