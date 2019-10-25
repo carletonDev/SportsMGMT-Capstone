@@ -3,6 +3,7 @@
 namespace SportsMGMTBLL
 {
     using Interfaces.IBusinessLogic;
+    using Interfaces.IDataAccess;
     using SportsMGMTCommon;
     using SportsMGMTDataAccess;
     using System;
@@ -14,9 +15,14 @@ namespace SportsMGMTBLL
     {
         //CRUD BLL for ROLES only Read actually implemented 
         //Populate a list of the roles
+        IRolesDataAccess rolesDataAccess;
+        public RolesBLL(IRolesDataAccess roles)
+        {
+            rolesDataAccess = roles;
+        }
         public List<Roles> GetRoles()
         {
-            RolesDataAccess rolesDataAccess = new RolesDataAccess();
+
             List<Roles> getRole = rolesDataAccess.GetRoles();
             return getRole;
         }            
@@ -24,16 +30,13 @@ namespace SportsMGMTBLL
         //check what a user's role is
         public Roles CheckRoleAccess(Users role)
         {
-            Roles userAccess = new Roles();
-            RolesDataAccess rolesDataAccess = new RolesDataAccess();
-            userAccess=rolesDataAccess.CheckRoleAccess(role);
 
+           Roles userAccess=rolesDataAccess.CheckRoleAccess(role);
             return userAccess;
         }
 
         public void DeleteRoles(Roles role)
         {
-            RolesDataAccess rolesDataAccess = new RolesDataAccess();
             rolesDataAccess.DeleteRoles(role.RoleType);
         }
     }

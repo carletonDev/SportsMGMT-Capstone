@@ -8,13 +8,22 @@
     using System.Threading.Tasks;
     using SportsMGMTDataAccess;
     using Interfaces.IBusinessLogic;
+    using Interfaces.IDataAccess;
 
     public class ContractsBLL:IContracts
     {
         //call the DA layer to Read contracts and store in a list
+        IContractsDataAccess contractsData;
+       IExceptions ExceptionDA;
+
+        public ContractsBLL(IContractsDataAccess contract,IExceptions exceptions)
+        {
+            contractsData = contract;
+            ExceptionDA = exceptions;
+        }
         public List<Contracts> GetContracts()
         {
-            ContractsDataAccess contractsData = new ContractsDataAccess();
+
             List<Contracts> contractList = contractsData.GetContracts();
 
             return contractList;
@@ -25,12 +34,12 @@
             bool check;
             try
             {
-                ContractsDataAccess contractsData = new ContractsDataAccess();
+
                  check=contractsData.CreateContract(contract);
             }
             catch(Exception ex)
             {
-                ExeceptionDataAccess ExceptionDA = new ExeceptionDataAccess();
+
                 ExceptionDA.StoreExceptions(ex);
                 check=false;
             }
@@ -43,12 +52,11 @@
             bool check;
             try
             {
-                ContractsDataAccess contractsData = new ContractsDataAccess();
+
                 check = contractsData.UpdateContract(contract);
             }
             catch (Exception ex)
             {
-                ExeceptionDataAccess ExceptionDA = new ExeceptionDataAccess();
                 ExceptionDA.StoreExceptions(ex);
                 check = false;
             }
@@ -61,12 +69,10 @@
             bool check;
             try
             {
-                ContractsDataAccess contractsData = new ContractsDataAccess();
                 check = contractsData.DeleteContracts(contract);
             }
             catch (Exception ex)
             {
-                ExeceptionDataAccess ExceptionDA = new ExeceptionDataAccess();
                 ExceptionDA.StoreExceptions(ex);
                 check = false;
             }

@@ -3,6 +3,7 @@
 namespace SportsMGMTBLL
 {
     using Interfaces.IBusinessLogic;
+    using Interfaces.IDataAccess;
     using SportsMGMTCommon;
     using SportsMGMTDataAccess;
     using System;
@@ -14,9 +15,13 @@ namespace SportsMGMTBLL
     {
         //CRUD FOR TEAMS
         //Method to call the Team DA layer and get the current teams
+        ITeamDataAccess teamData;
+        public TeamBLL(ITeamDataAccess team)
+        {
+            teamData = team;
+        }
         public List<Team> GetTeams()
         {
-            TeamDataAccess teamData = new TeamDataAccess();
 
             List<Team> getTeams = teamData.GetTeams();
 
@@ -25,17 +30,17 @@ namespace SportsMGMTBLL
         //BLL method to Create a team into the database
         public void CreateTeam(Team team)
         {
-            TeamDataAccess teamData = new TeamDataAccess();
+
             teamData.CreateTeam(team);
         }
         public void UpdateTeam(Team team)
         {
-            TeamDataAccess teamData = new TeamDataAccess();
+
             teamData.UpdateTeam(team);
         }
         public void DeleteTeam(Team team)
         {
-            TeamDataAccess teamData = new TeamDataAccess();
+
             teamData.DeleteTeam(team);
         }
 
