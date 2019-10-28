@@ -19,6 +19,8 @@ namespace SportsMGMTApp
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             //resolve the interfaces you made
             //install castle.windsor.mvc to auto gen the controller factory to instantiate them at app start in assembly
+            //it also needs to be here
+            ContainerBootstrapper.Bootstrap();
         }
         protected void Application_AcquireRequestState(object sender, EventArgs e)
        {

@@ -6,6 +6,8 @@ namespace SportsMGMTCommon
     using System.Collections.Generic;
     public class DashBoard
     {
+        public static NullDashboard Null = NullDashboard;
+        private static NullDashboard NullDashboard { get => new NullDashboard(); }
         public string GameDay { get; set; }
         public string PracticeTime { get; set; }
 
@@ -44,5 +46,39 @@ namespace SportsMGMTCommon
    
 
 
+    }
+    public class NullDashboard : DashBoard
+    {
+        public NullDashboard()
+        {
+            GameDay = "No GameDay";
+            PracticeTime = "No Time";
+            NumGames = 0;
+            NumPractices = 0;
+            MyRoster = new List<Users>();
+            MyRoster.Add(Users.Null);
+            MyTeam = Team.Null.TeamName;
+            Standings = new List<Team>();
+            Standings.Add(Team.Null);
+            NoTeam = 0;
+            MyStats = new NullPlayerStats();
+            AverageSalary = 0.0M;
+            ContractExpires = DateTime.Now;
+            DaysRemaining = "No Contract Time";
+            TeamWins = 0;
+            TeamLosses = 0;
+            PlayerStats = new List<PlayerStats>();
+            PlayerStats.Add(new NullPlayerStats());
+            FreeAgents = new List<Users>();
+            FreeAgents.Add(Users.Null);
+            NoRoles = 0;
+            Message = "No New Messages";
+            CapSpace = 0.0M;
+            TeamSalary = 0.0M;
+            PercentageCap = 0.0M;
+            MyTeam = "No Team";
+
+
+        }
     }
 }

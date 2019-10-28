@@ -7,7 +7,7 @@
 <div class="scheduler_container">
     @Html.Raw(Model.Render())
 </div>
-@{ if (user.RoleID == 1 || user.RoleID == 2) {
+@{ if (user.RoleID == (int)SportsMGMTCommon.Role.Admin || user.RoleID == (int)SportsMGMTCommon.Role.Coach) {
 <a href=@Url.Action("AddPractice", "Practice") class="btn btn-primary btn-icon-split">
     <span class="icon text-white-50">
         <i class="fas fa-flag"></i>
@@ -20,7 +20,7 @@
 
     }
     }
-@{ if (user.RoleID == 1)
+@{ if (user.RoleID == (int)SportsMGMTCommon.Role.Admin )
     {
 <a href=@Url.Action("Game", "Game") class="btn btn-primary btn-icon-split">
 <span class="icon text-white-50">

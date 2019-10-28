@@ -34,7 +34,7 @@ namespace SportsMGMTApp.Models
 
         public bool ChangePassword { get; set; }
         //finds who midified the user last for formatting
-        public static string WhoModified(int id)
+        public  string WhoModified(int id)
         {
                 string name = "";
             if (id!=0)
@@ -44,18 +44,18 @@ namespace SportsMGMTApp.Models
             }
             else
             {
-                name = "No Modifier";
+                name = "No modified";
             }
             return name;
         }
         //Format the Value of Team
-        public static string TeamName(int id)
+        public  string TeamName(int id)
         {
 
             string Name = "";
-            if (id == 0)
+            if (id == Users.Null.UserID)
             {
-                Name = "No Team";
+                Name = Team.Null.TeamName;
             }
             else
             {
@@ -65,12 +65,12 @@ namespace SportsMGMTApp.Models
             return Name;
         }
         //find role name
-        public static string RoleName(int id)
+        public  string RoleName(int id)
         {
             string Name ="";
-            if (id == 0)
+            if (id == Users.Null.UserID)
             {
-                Name = "No Role";
+                Name = Roles.Null.RoleType;
             }
             else { Name = rolesBLL.GetRoles().Find(m => m.RoleID == id).RoleType; }
             return Name;
@@ -95,12 +95,12 @@ namespace SportsMGMTApp.Models
                 return new SelectList(contractsBLL.GetContracts(), "ContractID", "ContractType");
             } }
         //Finds the name of the contracts
-        public static string FindContractName(int id)
+        public  string FindContractName(int id)
         {
             string Name = "";
-            if(id == 0)
+            if(id == Contracts.Null.ContractID)
             {
-                Name = "No Contract";
+                Name = Contracts.Null.ContractType;
             }
             else 
             {

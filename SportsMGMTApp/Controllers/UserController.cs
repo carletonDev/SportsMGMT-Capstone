@@ -27,7 +27,8 @@ namespace SportsMGMTApp.Controllers
         IGame gameBLL;
         IPractice practiceBLL;
         IContracts contractsBLL;
-        public UserController(IUser user, IRole role, ITeam teams, IGame game, IPractice practice,IContracts contracts)
+        IAttendanceBLL attend;
+        public UserController(IUser user, IRole role, ITeam teams, IGame game, IPractice practice,IContracts contracts, IAttendanceBLL attendance)
         {
             userBLL = user;
             rolesBLL = role;
@@ -35,6 +36,7 @@ namespace SportsMGMTApp.Controllers
             gameBLL = game;
             practiceBLL = practice;
             contractsBLL = contracts;
+            attend = attendance;
         }
         //CRUD for user as well as sending Emails More detailed comments in method
         /// <summary>
@@ -57,7 +59,7 @@ namespace SportsMGMTApp.Controllers
             bool check = false;
             if (ModelState.IsValid)
             {
-                Mapper.UserMapper UserMap = new Mapper.UserMapper();
+                UserMapper UserMap = new UserMapper();
                 //set the user variable through method in mapper class
 
                 Users insert = UserMap.SendToBLL(user);
@@ -232,18 +234,20 @@ namespace SportsMGMTApp.Controllers
                 }
                 //Call roles BLL
 
-                Roles role = rolesBLL.CheckRoleAccess(loginUsers);
+               Roles role = rolesBLL.GetRoles().Find(m=>m.RoleID==loginUsers.RoleID);
                 //DO NOT REMOVE
                 Session["Roles"] = role.RoleType;
                 Session["UserName"] = loginUsers.UserName;
                 //DO NOT REMOVE
                 Session["Users"] = loginUsers;
-                if (loginUsers.RoleID != 0)
+                if (loginUsers.RoleID != Roles.Null.RoleID)
                 {
-                    Session["Dash"] = MeaningfulCalculation.ReturnDashBoard(loginUsers);
+                    MeaningfulCalculation calculations = new MeaningfulCalculation(attend, userBLL, team, contractsBLL, practiceBLL, gameBLL);
+
+                    Session["Dash"] = calculations.ReturnDashBoard(loginUsers); 
                 }
                 //display login successful or failed
-                    if (loginUsers.RoleID == 0)
+                    if (loginUsers.RoleID == Users.Null.UserID)
                     {
                         return Redirect("~/User/NewUserHome");
                     }
@@ -381,16 +385,18 @@ namespace SportsMGMTApp.Controllers
         {
 
             var user = Session["Users"] as Users;
+            Session["model"] = new UserModel(userBLL, team, rolesBLL, contractsBLL);
             List<Users> viewAll = new List<Users>();
-            if (user.RoleID == 1)
+            if (user.RoleID == (int)Role.Admin)
             {
                 viewAll = userBLL.GetUsers();
             }
-            else if (user.RoleID == 2)
+            else if (user.RoleID == (int)Role.Coach)
             {
+                Team freeAgent = team.GetTeams().Find(m => m.TeamName == Team.Null.TeamName);
                 viewAll = userBLL.GetUsers().FindAll(m=>m.TeamID==user.TeamID);
-                viewAll.AddRange(userBLL.GetUsers().FindAll(m => m.TeamID == 1034));
-                viewAll.AddRange(userBLL.GetUsers().FindAll(m => m.TeamID == 0));
+                viewAll.AddRange(userBLL.GetUsers().FindAll(m => m.TeamID == freeAgent.TeamID));
+                viewAll.AddRange(userBLL.GetUsers().FindAll(m => m.TeamID == Team.Null.TeamID));
             }
             return View(viewAll);
         }
@@ -544,9 +550,6 @@ namespace SportsMGMTApp.Controllers
         public ActionResult UpdateUser(UserModel model)
         {
            
-            
-
-
             return View(model);
         }
 
@@ -576,12 +579,11 @@ namespace SportsMGMTApp.Controllers
             Users finduser = userBLL.GetUsers().Find(m => m.UserID == model.UserID);
 
             //set the users team and contract to none
-            finduser.TeamID = 1034;
-            finduser.ContractID = 2017;
 
             userBLL.UpdateUser(finduser);
+            Team FreeAgent = team.GetTeams().Find(m => m.TeamName == Team.Null.TeamName);
             //check if it worked
-            bool check = userBLL.GetUsers().Exists(m => m.UserID == finduser.UserID && m.TeamID == 1034);
+            bool check = userBLL.GetUsers().Exists(m => m.UserID == finduser.UserID && m.TeamID == FreeAgent.TeamID);
 
             if (check)
             {
@@ -611,26 +613,27 @@ namespace SportsMGMTApp.Controllers
             Team getTeam = new Team();
             List<Users> getUsers = new List<Users>();
   
-            if (users.TeamID != 0)
+            if (users.TeamID != Team.Null.TeamID)
             {
                 getTeam = team.GetTeams().Find(m => m.TeamID == users.TeamID);
             }
-            else { }
+            else { getTeam = Team.Null; }
             //Get Average Contract
-            if (users.TeamID != 0)
+            if (users.TeamID != Team.Null.TeamID)
             {
                 getUsers = userBLL.GetUsers().FindAll(m => m.TeamID == users.TeamID);
             }
-            else { }
+            else { getUsers = DashBoard.Null.FreeAgents; }
 
             List<decimal> salaries = new List<decimal>();
             //Find Days remaining till Contract Expiration
 
             //find when the contract expires
-            if (users.ContractDuration != 0)
+            if (users.ContractDuration != Users.Null.ContractDuration)
             {
                 dashboard.ContractExpires = users.ContractStart.AddDays(users.ContractDuration * 365);
             }
+            else { dashboard.ContractExpires = DashBoard.Null.ContractExpires; }
             TimeSpan time = (dashboard.ContractExpires-DateTime.Now);
             string daysRemaining = time.Days.ToString() + "Days" + time.Hours.ToString() + "Hours" + time.Minutes.ToString() + "Minutes";
             dashboard.DaysRemaining = daysRemaining;
@@ -647,9 +650,9 @@ namespace SportsMGMTApp.Controllers
             dashboard.AverageSalary = averageSalary;
             //User Messages and Alerts
             //message for users with no teams
-
-            List<Users> getUser = userBLL.GetUsers().FindAll(m => m.TeamID == 0);
-            getUser.AddRange(userBLL.GetUsers().FindAll(m => m.TeamID == 1034));
+            Team freeAgent = team.GetTeams().Find(m => m.TeamName == "Free Agent");
+            List<Users> getUser = userBLL.GetUsers().FindAll(m => m.TeamID == Team.Null.TeamID);
+            getUser.AddRange(userBLL.GetUsers().FindAll(m => m.TeamID == freeAgent.TeamID));
             dashboard.NoTeam = getUser.Count;
 
             dashboard.FreeAgents = getUser;
@@ -660,7 +663,7 @@ namespace SportsMGMTApp.Controllers
             dashboard.Standings = team.GetTeams().FindAll(m => m.TeamType == "basketball");
             //message for users with no roles for admin to notifiy
 
-            List<Users> UsersRole = userBLL.GetUsers().FindAll(m => m.RoleID == 0);
+            List<Users> UsersRole = userBLL.GetUsers().FindAll(m => m.RoleID == Roles.Null.RoleID);
             dashboard.NoRoles = UsersRole.Count;
 
             //Salary Cap Remaining

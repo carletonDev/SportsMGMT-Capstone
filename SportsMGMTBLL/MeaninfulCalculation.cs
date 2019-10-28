@@ -68,7 +68,7 @@
 
         }
         //does the dashboard calculations for display
-        public static DashBoard ReturnDashBoard(Users users)
+        public  DashBoard ReturnDashBoard(Users users)
         {
             //Users
             //var users = Session["Users"] as Users;
@@ -76,8 +76,9 @@
 
             DashBoard dashboard = new DashBoard();
             Team getTeam = new Team();
+
             List<Users> getUsers = new List<Users>();
-            if (users.TeamID != 0)
+            if (users.TeamID != Team.Null.TeamID)
             {
                 getTeam = team.GetTeams().Find(m => m.TeamID == users.TeamID);
             }
@@ -104,7 +105,15 @@
             foreach (Users user in getUsers)
             {
                 Contracts contracts = contractsBLL.GetContracts().Find(m => m.ContractID == user.ContractID);
-                salaries.Add(contracts.Salary);
+                if (contracts == null)
+                {
+                    contracts = Contracts.Null;
+                }
+                if (contracts.Salary != Contracts.Null.Salary)
+                {
+                    salaries.Add(contracts.Salary);
+                }
+                else { contracts.Salary = Contracts.Null.Salary; }
             }
             //Get average
             decimal averageSalary =0.0M;
@@ -116,9 +125,9 @@
             dashboard.AverageSalary = averageSalary;
             //User Messages and Alerts
             //message for users with no teams
-
-            List<Users> getUser = usersBLL.GetUsers().FindAll(m => m.TeamID == 0);
-            getUser.AddRange(usersBLL.GetUsers().FindAll(m => m.TeamID == 1034));
+            Team freeAgent = team.GetTeams().Find(m => m.TeamName == Team.Null.TeamName);
+            List<Users> getUser = usersBLL.GetUsers().FindAll(m => m.TeamID == Team.Null.TeamID);
+            getUser.AddRange(usersBLL.GetUsers().FindAll(m => m.TeamID == freeAgent.TeamID));
             dashboard.NoTeam = getUser.Count;
 
             dashboard.FreeAgents = getUser;
@@ -131,7 +140,7 @@
             dashboard.Standings.Sort((x,y)=>y.Wins.CompareTo(x.Wins));
             //message for users with no roles for admin to notifiy
             
-            List<Users> UsersRole = usersBLL.GetUsers().FindAll(m => m.RoleID == 0);
+            List<Users> UsersRole = usersBLL.GetUsers().FindAll(m => m.RoleID == Roles.Null.RoleID);
             dashboard.NoRoles = UsersRole.Count;
 
             //Salary Cap Remaining
@@ -142,6 +151,10 @@
             {
                 //get contract object and add salary times contract year to the capspace list
                 Contracts salary = contractsBLL.GetContracts().Find(m => m.ContractID == users1.ContractID);
+                if (salary == null)
+                {
+                    salary = Contracts.Null;
+                }
                 CapSpace.Add(Convert.ToDecimal(salary.Salary * users1.ContractDuration));
             }
             //Sum all the contracts
@@ -152,13 +165,13 @@
             //Display Win Loss ratio
             dashboard.TeamWins = team.GetTeams().Find(m => m.TeamID == users.TeamID).Wins;
             dashboard.TeamLosses = team.GetTeams().Find(m => m.TeamID == users.TeamID).Losses;
-            if (users.TeamID != 1034)
+            if (users.TeamID != freeAgent.TeamID)
             {
                 dashboard.MyTeam = team.GetTeams().Find(m => m.TeamID == users.TeamID).TeamName;
             }
             else
             {
-                dashboard.MyTeam = "No Team";
+                dashboard.MyTeam = Team.Null.TeamName;
             }
             //find all upcoming games and practices for the next two weeks for notifications for the players
 
@@ -170,11 +183,18 @@
             //store all users games into the game table
             allGames.AddRange(homeGames);
             allGames.AddRange(awayGame);
-
+            //if the games are null set to null singleton
+            if (allGames == null)
+            {
+                allGames.Add(Game.Null);
+            }
             //Get all practices
-
             List<Practice> teamPractices = practiceBLL.GetPractice().FindAll(m => m.TeamID == users.TeamID);
-
+            //if practice are null set to null singleton
+            if (teamPractices == null)
+            {
+                teamPractices.Add(Practice.Null);
+            }
             //check time span find the game one week away
             List<Game> weeklyGame = new List<Game>();
             foreach (Game game in allGames)
@@ -207,7 +227,7 @@
             }
             else
             {
-                dashboard.GameDay = "No Upcoming Games";
+                dashboard.GameDay = DashBoard.Null.GameDay;
             }
             //set the earliest time practice in the week to practice time
             if (WeeklyPractice.Count >=1)
@@ -216,7 +236,7 @@
             }
             else
             {
-                dashboard.PracticeTime = "No Practices Created";
+                dashboard.PracticeTime = DashBoard.Null.PracticeTime;
             }
             // to Do  two different cards for players to see when they log in to the system
             dashboard.NumGames = weeklyGame.Count;

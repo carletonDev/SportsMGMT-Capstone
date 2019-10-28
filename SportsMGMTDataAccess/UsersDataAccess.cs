@@ -66,37 +66,44 @@
                                 //Add to objects send to list
                                 Users users = new Users();
                                 users.UserID = (int)reader["userID"];
-                                users.FullName = (string)reader["full_name"];
-                                users.Address = (string)reader["address"];
+                                users.FullName = reader["full_name"]!=DBNull.Value?(string)reader["full_name"]:Users.Null.FirstName;
+                                users.Address = reader["address"] !=DBNull.Value?(string)reader["address"]:Users.Null.Address;
                                 if (reader["email"] != DBNull.Value)
                                 {
                                     users.Email = (string)reader["email"];
                                 }
+                                else { users.Email = Users.Null.Email; }
                                 if (reader["phone"] != DBNull.Value)
                                 {
                                     users.Phone = (string)reader["phone"];
                                 }
+                                else { users.Phone = Users.Null.Phone; }
                                 if (reader["teamID_fk"] != DBNull.Value)
                                 {
                                     users.TeamID = (int)reader["teamID_fk"];
                                 }
-                                else { users.TeamID = 0; }
+                                else { users.TeamID = Users.Null.TeamID; }
                                 if (reader["role_id"] != DBNull.Value)
                                 {
                                     users.RoleID = (int)reader["role_id"];
                                 }
+                                //set to default null values if db returns null
+                                else { users.RoleID = Users.Null.RoleID; }
                                 if (reader["contractID_fk"] != DBNull.Value)
                                 {
                                     users.ContractID = (int)reader["contractID_fk"];
                                 }
+                                else { users.ContractID = Users.Null.ContractID; }
                                 if (reader["user_modified_by_fk"] != DBNull.Value)
                                 {
                                     users.UserModified = (int)reader["user_modified_by_fk"];
                                 }
+                                else { users.UserModified = Users.Null.UserModified; }
                                 if (reader["injury_status"] != DBNull.Value)
                                 {
                                     users.InjuryStatus = (bool)reader["injury_status"];
                                 }
+                                else { users.InjuryStatus = Users.Null.InjuryStatus; }
                                 if (reader["injurydesc"] != DBNull.Value)
                                 {
                                     users.InjuryDescription = (string)reader["injurydesc"];
@@ -105,18 +112,22 @@
                                 {
                                     users.UserName = (string)reader["username"];
                                 }
+                                else { users.UserName = Users.Null.UserName; }
                                 if (reader["password"] != DBNull.Value)
                                 {
                                     users.Password = (string)reader["password"];
                                 }
+                                else { users.Password = Users.Null.Password; }
                                 if(reader["contract_duration"]!= DBNull.Value)
                                 {
                                     users.ContractDuration = (int)reader["contract_duration"];
                                 }
+                                else { users.ContractDuration = Users.Null.ContractDuration; }
                                 if(reader["contract_start"]!= DBNull.Value)
                                 {
                                     users.ContractStart = (DateTime)reader["contract_start"];
                                 }
+                                else { users.ContractStart = Users.Null.ContractStart; }                                
                                 getUsers.Add(users);
                             }
                         }
@@ -151,64 +162,71 @@
                         {
                             while (reader.Read())
                             {
-                                //Add to object to return
+                                //Add to object
+                  
                                 users.UserID = (int)reader["userID"];
-                                users.UserName = (string)reader["username"];
-                                users.FullName = (string)reader["full_name"];
-                                users.Address = (string)reader["address"];
+                                users.FullName = reader["full_name"] != DBNull.Value ? (string)reader["full_name"] : Users.Null.FirstName;
+                                users.Address = reader["address"] != DBNull.Value ? (string)reader["address"] : Users.Null.Address;
                                 if (reader["email"] != DBNull.Value)
                                 {
                                     users.Email = (string)reader["email"];
                                 }
-                                else { users.Email = "No Email Provided"; }
+                                else { users.Email = Users.Null.Email; }
                                 if (reader["phone"] != DBNull.Value)
                                 {
                                     users.Phone = (string)reader["phone"];
                                 }
-                                else { users.Phone = "No Phone Provided"; }
+                                else { users.Phone = Users.Null.Phone; }
                                 if (reader["teamID_fk"] != DBNull.Value)
                                 {
                                     users.TeamID = (int)reader["teamID_fk"];
                                 }
-                                else { users.TeamID = 0; }
+                                else { users.TeamID = Users.Null.TeamID; }
                                 if (reader["role_id"] != DBNull.Value)
                                 {
                                     users.RoleID = (int)reader["role_id"];
                                 }
-                                else { users.RoleID = 0; }
+                                //set to default null values if db returns null
+                                else { users.RoleID = Users.Null.RoleID; }
                                 if (reader["contractID_fk"] != DBNull.Value)
                                 {
                                     users.ContractID = (int)reader["contractID_fk"];
                                 }
-                                else { users.ContractID = 0; }
+                                else { users.ContractID = Users.Null.ContractID; }
                                 if (reader["user_modified_by_fk"] != DBNull.Value)
                                 {
                                     users.UserModified = (int)reader["user_modified_by_fk"];
                                 }
+                                else { users.UserModified = Users.Null.UserModified; }
                                 if (reader["injury_status"] != DBNull.Value)
                                 {
                                     users.InjuryStatus = (bool)reader["injury_status"];
                                 }
+                                else { users.InjuryStatus = Users.Null.InjuryStatus; }
                                 if (reader["injurydesc"] != DBNull.Value)
                                 {
                                     users.InjuryDescription = (string)reader["injurydesc"];
                                 }
+                                if (reader["username"] != DBNull.Value)
+                                {
+                                    users.UserName = (string)reader["username"];
+                                }
+                                else { users.UserName = Users.Null.UserName; }
+                                if (reader["password"] != DBNull.Value)
+                                {
+                                    users.Password = (string)reader["password"];
+                                }
+                                else { users.Password = Users.Null.Password; }
                                 if (reader["contract_duration"] != DBNull.Value)
                                 {
                                     users.ContractDuration = (int)reader["contract_duration"];
                                 }
-                                if(reader["contract_start"] != DBNull.Value)
+                                else { users.ContractDuration = Users.Null.ContractDuration; }
+                                if (reader["contract_start"] != DBNull.Value)
                                 {
                                     users.ContractStart = (DateTime)reader["contract_start"];
                                 }
-                                if(reader["password"] != DBNull.Value)
-                                {
-                                    users.Password = (string)reader["password"];
-                                }
-                                else
-                                {
-                                    users.Password = "New User";
-                                }
+                                else { users.ContractStart = Users.Null.ContractStart; }
                             }
                         }
                     }
@@ -232,7 +250,7 @@
                     using (SqlCommand command = new SqlCommand("UpdateUsers", con))
                     {
                         command.CommandType = CommandType.StoredProcedure;
-                        command.CommandTimeout = 10;
+                        command.CommandTimeout = 30;
                         command.Parameters.AddWithValue("@uid", user.UserID);
                         command.Parameters.AddWithValue("@tid",user.TeamID);
                         command.Parameters.AddWithValue("@cid", user.ContractID);
@@ -242,7 +260,7 @@
                         command.Parameters.AddWithValue("@address", user.Address);
                         if(user.Email is null)
                         {
-                            command.Parameters.AddWithValue("@email", "none provided");
+                            command.Parameters.AddWithValue("@email", Users.Null.Email);
                         }
                         else { command.Parameters.AddWithValue("@email", user.Email); }
 
@@ -252,7 +270,7 @@
                         command.Parameters.AddWithValue("@injury", user.InjuryStatus);
                         if(user.InjuryDescription is null)
                         {
-                            command.Parameters.AddWithValue("@injurydesc", "not injured");
+                            command.Parameters.AddWithValue("@injurydesc", Users.Null.InjuryDescription);
                         }
                         else
                         {

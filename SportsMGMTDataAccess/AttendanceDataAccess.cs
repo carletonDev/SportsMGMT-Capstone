@@ -97,17 +97,17 @@ namespace SportsMGMTDataAccess
                                 {
                                     attendance.GameID = (int)reader["gameID"];
                                 }
-                                else { }
+                                else { attendance.GameID = GameAttendance.Null.GameID; }
                                 if (reader["userID_fk"] != DBNull.Value)
                                 {
                                     attendance.UserID = (int)reader["userID_fk"];
                                 }
-                                else { }
+                                else { attendance.UserID = GameAttendance.Null.UserID; }
                                 if (reader["attended"] != DBNull.Value)
                                 {
                                     attendance.Attended = (bool)reader["attended"];
                                 }
-                                else { }
+                                else { attendance.Attended = GameAttendance.Null.Attended; }
                                 getAttended.Add(attendance);
                             }
                         }
@@ -150,7 +150,7 @@ namespace SportsMGMTDataAccess
                                 }
                                 else
                                 {
-                                    attendance.UserID = 0;
+                                    attendance.UserID = PracticeAttended.Null.UserID;
                                 }
                                 if (reader["practiceID"] != DBNull.Value)
                                 {
@@ -158,7 +158,7 @@ namespace SportsMGMTDataAccess
                                 }
                                 else
                                 {
-                                    attendance.PracticeID = 0;
+                                    attendance.PracticeID = PracticeAttended.Null.PracticeID;
                                 }
                                 if (reader["attended"] != DBNull.Value)
                                 {
@@ -166,7 +166,7 @@ namespace SportsMGMTDataAccess
                                 }
                                 else
                                 {
-                                   
+                                    attendance.Attended = PracticeAttended.Null.Attended;
                                 }
                                 getAttended.Add(attendance);
                             }

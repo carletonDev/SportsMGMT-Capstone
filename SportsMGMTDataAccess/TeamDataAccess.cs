@@ -25,7 +25,7 @@ namespace SportsMGMTDataAccess
                     using (SqlCommand command = new SqlCommand("sp_GetTeams", con))
                     {
                         command.CommandType = CommandType.StoredProcedure;
-                        command.CommandTimeout = 10;
+                        command.CommandTimeout = 30;
                         con.Open();
 
                         using (SqlDataReader reader = command.ExecuteReader())
@@ -37,17 +37,17 @@ namespace SportsMGMTDataAccess
                                 {
                                     team.TeamID = (int)reader["teamID"];
                                 }
-                                else { team.TeamID = 0; }
-                                team.SalaryCap = (decimal)reader["salary_cap"];
-                                team.TeamName = (string)reader["team_name"];
-                                team.TeamType = (string)reader["team_type"];
+                                else { team.TeamID = Team.Null.TeamID; }
+                                team.SalaryCap = reader["salary_cap"]!=DBNull.Value?(decimal)reader["salary_cap"]:Team.Null.SalaryCap;
+                                team.TeamName = reader["team_name"]!=DBNull.Value?(string)reader["team_name"]:Team.Null.TeamName;
+                                team.TeamType = reader["team_type"]!=DBNull.Value?(string)reader["team_type"]:Team.Null.TeamType;
                                 if (reader["wins"] != DBNull.Value)
                                 {
                                     team.Wins = (int)reader["wins"];
                                 }
                                 else
                                 {
-
+                                    team.Wins = Team.Null.Wins;
                                 }
                                 if (reader["losses"] != DBNull.Value)
                                 {
@@ -55,7 +55,7 @@ namespace SportsMGMTDataAccess
                                 }
                                 else
                                 {
-
+                                    team.Losses = Team.Null.Losses;
                                 }
                                 getTeams.Add(team);
                             }

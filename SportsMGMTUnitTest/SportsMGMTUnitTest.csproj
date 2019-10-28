@@ -64,6 +64,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Interfaces\Interfaces.csproj">
+      <Project>{B90B0F42-8AA9-4ABB-B5C7-A4ACC803BB2E}</Project>
+      <Name>Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SportsMGMTBLL\SportsMGMTBLL.csproj">
       <Project>{3e09e772-e2c3-484b-8bca-0ec9d41da314}</Project>
       <Name>SportsMGMTBLL</Name>
@@ -71,6 +75,10 @@
     <ProjectReference Include="..\SportsMGMTCommon\SportsMGMTCommon.csproj">
       <Project>{08c2d24b-7a31-4fdd-b14b-9d4406aa6eb8}</Project>
       <Name>SportsMGMTCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SportsMGMTDataAccess\SportsMGMTDAL.csproj">
+      <Project>{4A79A8D8-E9F9-4468-AEA5-DA9BC585BB5D}</Project>
+      <Name>SportsMGMTDAL</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

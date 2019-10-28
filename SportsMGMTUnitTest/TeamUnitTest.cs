@@ -3,17 +3,21 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SportsMGMTCommon;
 using SportsMGMTBLL;
 using System.Collections.Generic;
+using Interfaces.IDataAccess;
+using SportsMGMTDataAccess;
 
 namespace SportsMGMTUnitTest
 {
     [TestClass]
     public class TeamUnitTest
     {
+        ITeamDataAccess teamDA = new TeamDataAccess();
+
         [TestMethod]
         public void GetTeam()
         {
             //Arrange -- create BLL object and populate list with database teams
-            TeamBLL teamBLL = new TeamBLL();
+            TeamBLL teamBLL = new TeamBLL(teamDA);
             List<Team> getTeams = teamBLL.GetTeams();
             //Act- check if Data is in the database
             bool check = getTeams.Exists(m => m.TeamName == "Macon SmallTowners");
@@ -24,7 +28,7 @@ namespace SportsMGMTUnitTest
         public void CreateTeam()
         {
             //Arrange - Create a Test object for insert and create a team BLL object
-            TeamBLL teamBLL = new TeamBLL();
+            TeamBLL teamBLL = new TeamBLL(teamDA);
             Team team = new Team();
             //Act --Add Data to database get list of teams check if team was added
             team.SalaryCap = 1113.000M;
@@ -40,7 +44,7 @@ namespace SportsMGMTUnitTest
         public void UpdateTeam()
         {
             //Arrange -create a new BLL object of the TeamBLL class and change Macon SmallTowners wins to 1 and losses to 1
-            TeamBLL teamBLL = new TeamBLL();
+            TeamBLL teamBLL = new TeamBLL(teamDA);
             List<Team> teams = teamBLL.GetTeams();
 
             //Find the team from the list that you want to update and set the wins and losses the other values will be the same
@@ -58,7 +62,7 @@ namespace SportsMGMTUnitTest
         {
             //Arrange
             Team team = new Team();
-            TeamBLL teamBLL = new TeamBLL();
+            TeamBLL teamBLL = new TeamBLL(teamDA);
 
             //Act--Delete the Test Team Virginia Testers check to see if it still exists in the list of teams from the database obj
             team.TeamName = "Virginia Testers";

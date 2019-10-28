@@ -1,16 +1,16 @@
 ﻿@model List<SportsMGMTCommon.Users>
 
 @{
-    ViewBag.Title = "View All Users";
-    var user = Session["Users"] as SportsMGMTCommon.Users;
-
-    if (ViewBag.Message == "Player Removed from Team")
-    {
+                ViewBag.Title = "View All Users";
+                var user = Session["Users"] as SportsMGMTCommon.Users;
+                var model = Session["model"] as SportsMGMTApp.Models.UserModel;
+                if (ViewBag.Message == "Player Removed from Team")
+                {
         //display green message
         <div class="alert alert-success" role="alert">
             @ViewBag.Message
         </div>
-    }
+        }
     else if (ViewBag.Message == "Player Was Not Removed")
     {
         //display red message if exception thrown
@@ -84,19 +84,19 @@
                     {
                         <tr>
                             <td>
-                                @Html.FormatValue(item.TeamID, SportsMGMTApp.Models.UserModel.TeamName(item.TeamID))
+                                @Html.FormatValue(item.TeamID, model.TeamName(item.TeamID))
                             </td>
                             <td>
-                                @Html.FormatValue(item.ContractID, SportsMGMTApp.Models.UserModel.FindContractName(item.ContractID))
+                                @Html.FormatValue(item.ContractID,model.FindContractName(item.ContractID))
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.FullName)
                             </td>
                             <td>
-                                @Html.FormatValue(item.UserModified, SportsMGMTApp.Models.UserModel.WhoModified(item.UserModified))
+                                @Html.FormatValue(item.UserModified, model.WhoModified(item.UserModified))
                             </td>
                             <td>
-                                @Html.FormatValue(item.RoleID, SportsMGMTApp.Models.UserModel.RoleName(item.RoleID))
+                                @Html.FormatValue(item.RoleID, model.RoleName(item.RoleID))
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Address)
@@ -125,7 +125,7 @@
                             <td>
                                 @Html.DisplayFor(modelItem => item.ContractStart)
                             </td>
-                            @{ if (user.RoleID == 1)
+                            @{ if (user.RoleID == (int)SportsMGMTCommon.Role.Admin )
                                 {
                                     <td>
                                         @Html.ActionLink("Edit", "AssignContract", new { Controller="Home" ,Action="Assign Contract", id = item.UserID }) |

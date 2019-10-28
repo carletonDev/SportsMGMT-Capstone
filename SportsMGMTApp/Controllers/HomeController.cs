@@ -32,19 +32,36 @@ namespace SportsMGMTApp.Controllers
             exceptionLog = ex;
             contracts = contract;
         }
+        [MustBeLoggedIn]
+        public ActionResult Index()
+        {
+            return View();
+        }
         //returns the home page for admins with a model value of all users with no contracts
+        [MustBeLoggedIn]
+        [MustBeInRole(Roles="Admin")]
         public ActionResult DashboardAdmin()
         {
-            List<Users> getUsers = userBLL.GetUsers().FindAll(m => m.ContractID == 0).FindAll(m=>m.TeamID==0);
-            getUsers.AddRange(userBLL.GetUsers().FindAll(m => m.ContractID == 2017).FindAll(m => m.TeamID == 1034));
+            //store the record for free agents and no contracts to list
+            Team FreeAgent = teamBLL.GetTeams().Find(m => m.TeamName == "Free Agent");
+            Contracts NoContract = contracts.GetContracts().Find(m => m.ContractType == "No Contract");
+            //find all users with no teams or are on the free agent list
+            List<Users> getUsers = userBLL.GetUsers().FindAll(m => m.ContractID == Contracts.Null.ContractID).FindAll(m => m.TeamID == Team.Null.TeamID);
+            getUsers.AddRange(userBLL.GetUsers().FindAll(m => m.ContractID == NoContract.ContractID).FindAll(m => m.TeamID == FreeAgent.TeamID));
 
             return View(getUsers);
         }
         //returns the home page of coaches  with coach layout same model passed of users with not teams
+        [MustBeLoggedIn]
+        [MustBeInRole(Roles="Coach")]
         public ActionResult DashboardCoach()
         {
-            List<Users> getUsers = userBLL.GetUsers().FindAll(m => m.ContractID == 0).FindAll(m => m.TeamID == 0);
-            getUsers.AddRange(userBLL.GetUsers().FindAll(m => m.ContractID == 2017).FindAll(m => m.TeamID == 1034));
+            //store the record for free agents and no contracts to list
+            Team FreeAgent = teamBLL.GetTeams().Find(m => m.TeamName == "Free Agent");
+            Contracts NoContract = contracts.GetContracts().Find(m => m.ContractType == "No Contract");
+            //find all users with no teams or are on the free agent list
+            List<Users> getUsers = userBLL.GetUsers().FindAll(m => m.ContractID == Contracts.Null.ContractID).FindAll(m => m.TeamID == Team.Null.TeamID);
+            getUsers.AddRange(userBLL.GetUsers().FindAll(m => m.ContractID == NoContract.ContractID).FindAll(m => m.TeamID == FreeAgent.TeamID));
             return View(getUsers);
         }
 
@@ -83,11 +100,11 @@ namespace SportsMGMTApp.Controllers
                 return View(email);
             }
             //return the user back to their home screen based on role after email and confirmation email has been sent
-            if(user.RoleID == 1)
+            if(user.RoleID == (int)Role.Admin)
             {
                return Redirect("~/Home/DashboardAdmin");
             }
-            else if(user.RoleID == 2)
+            else if(user.RoleID == (int)Role.Coach)
             {
                return Redirect("~/Home/DashboardCoach");
             }
@@ -134,7 +151,7 @@ namespace SportsMGMTApp.Controllers
                 //if the user has requested Admin to change his password due to security issues
                 if (model.ChangePassword)
                 {
-                    model.user.Password = "password";
+                    model.user.Password = Users.Null.Password;
                 }
                 else
                 {
@@ -143,14 +160,14 @@ namespace SportsMGMTApp.Controllers
                 //if username is null
                 if (user.UserName is null)
                 {
-                    model.user.UserName = "none provided";
+                    model.user.UserName = Users.Null.UserName;
                 }
                 else
                 {
 
                 }
                 //if role is admin
-                if (users.RoleID != 1)
+                if (users.RoleID != (int)Role.Admin)
                 {
                     model.user.UserModified = users.UserID; //set who modified the user last
                     model.user.TeamID = users.TeamID; //assign him to coach team
@@ -158,9 +175,9 @@ namespace SportsMGMTApp.Controllers
                 else
                 {
                     model.user.UserModified = users.UserID; //set who modified user last
-                    if(model.TeamID == 0)
+                    if(model.TeamID == Team.Null.TeamID)
                     {
-                        model.user.TeamID = teamBLL.GetTeams().Find(m => m.TeamName == "No Team").TeamID;
+                        model.user.TeamID = teamBLL.GetTeams().Find(m => m.TeamName == Team.Null.TeamName).TeamID;
                     }
                     else
                     {
@@ -168,13 +185,12 @@ namespace SportsMGMTApp.Controllers
                         model.user.TeamID = id;
                     }
                 }
-                if (model.user.RoleID != 0)
+                if (model.user.RoleID != SportsMGMTCommon.Roles.Null.RoleID)
                 {
                     //do nothing to the users role if it has been assigned
                 }
-                else if (users.RoleID != 1)
+                else if (users.RoleID != (int)Role.Admin)
                 {
-
 
                     model.user.RoleID = rolesBLL.GetRoles().Find(m => m.RoleType == "Player").RoleID;
                 }

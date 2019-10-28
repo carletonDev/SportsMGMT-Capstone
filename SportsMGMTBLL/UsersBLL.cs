@@ -67,6 +67,7 @@ namespace SportsMGMTBLL
             {
 
                 ExceptionDA.StoreExceptions(ex);
+                return false;
             }
             return true;
         }

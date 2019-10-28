@@ -15,8 +15,7 @@ namespace SportsMGMTApp.Installers
                 Classes.
                     FromThisAssembly().
                     BasedOn<IController>().
-                    If(c => c.Name.EndsWith("Controller")).
-                    LifestyleTransient());
+                    If(c => c.Name.EndsWith("Controller")).LifestyleTransient());
 
             ControllerBuilder.Current.SetControllerFactory(new WindsorControllerFactory(container));
         }

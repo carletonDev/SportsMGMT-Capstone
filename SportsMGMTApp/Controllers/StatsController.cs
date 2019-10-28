@@ -182,7 +182,7 @@
             //Attendance pie chart
 
             var user = Session["Users"] as Users;
-            List<Users> users = usersBLL.GetUsers().FindAll(m => m.TeamID == user.TeamID && m.RoleID !=2);
+            List<Users> users = usersBLL.GetUsers().FindAll(m => m.TeamID == user.TeamID && m.RoleID !=(int)Role.Coach);
             List<CountAttendance> count = new List<CountAttendance>();
             //store each players practice attendance ratios in a list for each player on the team
             foreach (Users player in users)

@@ -34,9 +34,9 @@ namespace SportsMGMTDataAccess
                             while (reader.Read())
                             {
                                 Contracts contract = new Contracts();
-                                contract.ContractID = (int)reader["contractID"];
-                                contract.ContractType = (string)reader["contract_type"];
-                                contract.Salary = (decimal)reader["salary"];
+                                contract.ContractID = reader["contractID"]!=DBNull.Value?(int)reader["contractID"]:Contracts.Null.ContractID;
+                                contract.ContractType =reader["contract_type"]!=DBNull.Value?(string)reader["contract_type"]:Contracts.Null.ContractType;
+                                contract.Salary =reader["salary"]!=DBNull.Value?(decimal)reader["salary"]:Contracts.Null.Salary;
                                 getContracts.Add(contract);
                             }
                         }

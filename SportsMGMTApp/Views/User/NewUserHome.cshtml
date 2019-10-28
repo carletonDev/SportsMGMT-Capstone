@@ -4,10 +4,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     var users = Session["Users"] as SportsMGMTCommon.Users;
-    SportsMGMTBLL.UsersBLL user = new SportsMGMTBLL.UsersBLL();
 }
 
 <h2>Hello @users.FullName </h2>
 <h3>An Admin will approve your profile shortly Continue to check Back</h3>
+@Html.ActionLink("Logout","Logout","Home")
 
 
