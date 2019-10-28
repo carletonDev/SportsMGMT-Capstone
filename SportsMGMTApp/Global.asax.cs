@@ -1,4 +1,5 @@
-﻿using SportsMGMTBLL.IOC;
+﻿using SportsMGMTApp.App_Start;
+using SportsMGMTBLL.IOC;
 using System;
 using System.Security.Principal;
 using System.Web;
@@ -16,7 +17,8 @@ namespace SportsMGMTApp
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            Resolve.Resolver();
+            //resolve the interfaces you made
+            //install castle.windsor.mvc to auto gen the controller factory to instantiate them at app start in assembly
         }
         protected void Application_AcquireRequestState(object sender, EventArgs e)
        {

@@ -2,19 +2,20 @@
 using Castle.Windsor.Installer;
 using Interfaces.IBusinessLogic;
 using Interfaces.IDataAccess;
+
 using SportsMGMTDataAccess;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Web.Mvc;
 
 namespace SportsMGMTBLL.IOC
 {
     public static  class Resolve
     {
-        public static void Resolver()
+        public static WindsorContainer Resolver()
         {
             // application starts...
             var container = new WindsorContainer();
@@ -22,6 +23,7 @@ namespace SportsMGMTBLL.IOC
             // adds and configures all components using WindsorInstallers from executing assembly
             container.Install(FromAssembly.This());
             //resolve registered service in the i winsor container install method 
+
 
             //resolve data access layer
             container.Resolve<IAttendanceDataAccess>();
@@ -43,44 +45,10 @@ namespace SportsMGMTBLL.IOC
             container.Resolve<ITeam>();
             container.Resolve<IRole>();
             container.Resolve<IExceptionsBLL>();
+            return container;
+            
         }
-        public static IAttendanceDataAccess Attendance()
-        {
-            return new AttendanceDataAccess();
-        }
-        public static IContractsDataAccess Contracts()
-        {
-            return new ContractsDataAccess();
-        }
-        public static IExceptions Exceptions()
-        {
-            return new ExeceptionDataAccess();
-        }
-        public static IGameDataAccess Game()
-        {
-            return new GameDataAccess();
-        }
-        public static IPlayerStatsDA PlayerStats()
-        {
-            return new PlayerStatsDA();
-        }
-        public static IPracticeDataAccess Practice()
-        {
-            return new PracticeDataAccess();
-        }
-        public static IRolesDataAccess Roles()
-        {
-            return new RolesDataAccess();
-        }
-        public static ITeamDataAccess Team()
-        {
-            return new TeamDataAccess();
-        }
-        public static IUsersDataAcesss Users()
-        {
-            return new UsersDataAccess();
-        }
-        //instantiate interfaces here
+
 
     }
 }
