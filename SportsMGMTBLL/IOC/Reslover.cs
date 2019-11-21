@@ -10,41 +10,35 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using Unity;
 
 namespace SportsMGMTBLL.IOC
 {
-    public static  class Resolve
+    public static  class Resolver
     {
-        public static WindsorContainer Resolver()
+        public static UnityContainer Resolve()
         {
             // application starts...
-            var container = new WindsorContainer();
+            var container = new UnityContainer();
+            container.RegisterType<IAttendanceDataAccess, AttendanceDataAccess>();
+            container.RegisterType<IContractsDataAccess, ContractsDataAccess>();
+            container.RegisterType<IExceptions, ExeceptionDataAccess>();
+            container.RegisterType<IGameDataAccess, GameDataAccess>();
+            container.RegisterType<IPlayerStatsDA, PlayerStatsDA>();
+            container.RegisterType<IPracticeDataAccess, PracticeDataAccess>();
+            container.RegisterType<IRolesDataAccess, RolesDataAccess>();
+            container.RegisterType<ITeamDataAccess, TeamDataAccess>();
+            container.RegisterType<IUsersDataAcesss, UsersDataAccess>();
+            container.RegisterType<IAttendanceBLL, AttendanceBLL>();
+            container.RegisterType<IContracts,ContractsBLL>();
+            container.RegisterType<IExceptionsBLL, ExceptionLogBLL>();
+            container.RegisterType<IGame, GameBLL>();
+            container.RegisterType<IPlayerStats, PlayerStatsBLL>();
+            container.RegisterType<IPractice, PracticeBLL>();
+            container.RegisterType<IRole, RolesBLL>();
+            container.RegisterType<ITeam, TeamBLL>();
+            container.RegisterType<IUser, UsersBLL>();
 
-            // adds and configures all components using WindsorInstallers from executing assembly
-            container.Install(FromAssembly.This());
-            //resolve registered service in the i winsor container install method 
-
-
-            //resolve data access layer
-            container.Resolve<IAttendanceDataAccess>();
-            container.Resolve<IContractsDataAccess>();
-            container.Resolve<IExceptions>();
-            container.Resolve<IGameDataAccess>();
-            container.Resolve<IPlayerStatsDA>();
-            container.Resolve<IPracticeDataAccess>();
-            container.Resolve<IRolesDataAccess>();
-            container.Resolve<ITeamDataAccess>();
-            container.Resolve<IUsersDataAcesss>();
-            //resolve business logic layer
-            container.Resolve<IAttendanceBLL>();
-            container.Resolve<IContracts>();
-            container.Resolve<IGame>();
-            container.Resolve<IPlayerStats>();
-            container.Resolve<IPractice>();
-            container.Resolve<IUser>();
-            container.Resolve<ITeam>();
-            container.Resolve<IRole>();
-            container.Resolve<IExceptionsBLL>();
             return container;
             
         }

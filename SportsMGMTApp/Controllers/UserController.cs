@@ -235,8 +235,15 @@ namespace SportsMGMTApp.Controllers
                 //Call roles BLL
 
                Roles role = rolesBLL.GetRoles().Find(m=>m.RoleID==loginUsers.RoleID);
-                //DO NOT REMOVE
-                Session["Roles"] = role.RoleType;
+                if (role.RoleType != null)
+                {
+                    //DO NOT REMOVE
+                    Session["Roles"] = role.RoleType;
+                }
+                else
+                {
+                    Session["Roles"] = Roles.Null.RoleType;
+                }
                 Session["UserName"] = loginUsers.UserName;
                 //DO NOT REMOVE
                 Session["Users"] = loginUsers;
@@ -528,28 +535,6 @@ namespace SportsMGMTApp.Controllers
             };
             HomeController.SendEmails(email);
 
-            return View(model);
-        }
-
-        [HttpGet]
-        [MustBeInRole(Roles="Admin")]
-        public ActionResult UpdateUser(int id)
-        {
-
-            Users user = userBLL.GetUsers().Find(m => m.UserID == id);
-
-            UserModel player = new UserModel(userBLL, team, rolesBLL, contractsBLL)
-            {
-                user = user
-            };
-
-            return View(player);
-        }
-        [HttpPost]
-        [MustBeInRole(Roles="Admin")]
-        public ActionResult UpdateUser(UserModel model)
-        {
-           
             return View(model);
         }
 

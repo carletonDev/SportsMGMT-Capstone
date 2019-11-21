@@ -24,6 +24,7 @@ namespace SportsMGMTApp.Controllers
         IRole rolesBLL;
         IContracts contracts;
        static IExceptionsBLL exceptionLog;
+ 
         public HomeController(IUser user,ITeam team,IRole roles,IExceptionsBLL ex,IContracts contract)
         {
             userBLL = user;

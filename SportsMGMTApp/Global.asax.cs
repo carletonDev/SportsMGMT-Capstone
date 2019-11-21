@@ -1,11 +1,10 @@
-﻿using SportsMGMTApp.App_Start;
-using SportsMGMTBLL.IOC;
-using System;
+﻿using System;
 using System.Security.Principal;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using Unity.Mvc5;
 
 namespace SportsMGMTApp
 {
@@ -14,13 +13,12 @@ namespace SportsMGMTApp
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
+            UnityConfig.RegisterComponents();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            //resolve the interfaces you made
-            //install castle.windsor.mvc to auto gen the controller factory to instantiate them at app start in assembly
-            //it also needs to be here
-            ContainerBootstrapper.Bootstrap();
+      
+
         }
         protected void Application_AcquireRequestState(object sender, EventArgs e)
        {
