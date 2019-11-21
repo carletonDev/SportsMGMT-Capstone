@@ -16,10 +16,12 @@
         // GET: Stats
         IPlayerStats playerStats;
         IUser usersBLL;
-         public StatsController(IPlayerStats stats, IUser user)
+        IMeaningfulCalculation calculator;
+         public StatsController(IPlayerStats stats, IUser user ,IMeaningfulCalculation calculations)
         {
             playerStats = stats;
             usersBLL = user;
+            calculator = calculations;
         }
         public ActionResult Charts()
         {
@@ -325,7 +327,7 @@
             //get the percentage of the total points that player has earned
 
             //store in array random colors for the pie chart for chart.js
-            stats.ColorRandom = MeaningfulCalculation.RandomColor(stats.Points.Count());
+            stats.ColorRandom =calculator.RandomColor(stats.Points.Count());
 
 
         }
@@ -347,7 +349,7 @@
             //get the percentage of the total rebounds that player has earned
 
             //store in array random colors for the pie chart for chart.js
-            stats.ColorRandom = MeaningfulCalculation.RandomColor(stats.Points.Count());
+            stats.ColorRandom = calculator.RandomColor(stats.Points.Count());
         }
 
     }

@@ -38,6 +38,7 @@ namespace SportsMGMTBLL.IOC
             container.RegisterType<IRole, RolesBLL>();
             container.RegisterType<ITeam, TeamBLL>();
             container.RegisterType<IUser, UsersBLL>();
+            container.RegisterType<IMeaningfulCalculation, MeaningfulCalculation>();
 
             return container;
             
