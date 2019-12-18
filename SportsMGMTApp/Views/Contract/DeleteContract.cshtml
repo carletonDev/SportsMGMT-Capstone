@@ -27,7 +27,7 @@
     </span>
     <span class="text">Back to List</span>
 </a>
-@using (Html.BeginForm())
+@using (Html.BeginForm("DeleteContract","Contract"))
 {
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     @Html.HiddenFor(model => model.ContractID)

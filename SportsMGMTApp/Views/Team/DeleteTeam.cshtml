@@ -29,7 +29,7 @@
     <span class="text">Back To List</span>
 </a>
 <br />
-@using (Html.BeginForm())
+@using (Html.BeginForm("DeleteTeam","Team"))
 {
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     @Html.HiddenFor(model => model.Team.TeamID)

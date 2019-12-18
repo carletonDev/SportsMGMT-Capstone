@@ -29,7 +29,7 @@
     }
 }
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("CreateContract","Contract"))
 {
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     <div class="form-group">

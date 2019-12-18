@@ -33,7 +33,7 @@
     <span class="text">Back To List</span>
 </a>
 <br />
-@using (Html.BeginForm())
+@using (Html.BeginForm("UpdateTeam","Team"))
 {
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     @Html.HiddenFor(model => model.TeamID)

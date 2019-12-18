@@ -43,7 +43,7 @@
 }
  
 <h1>Update User </h1>
-@using (Html.BeginForm())
+@using (Html.BeginForm("AssignContract","Home"))
 {
     <div class="container-fluid">
         @Html.HiddenFor(model => model.user.UserID, new { htmlAttributes = new { @class = "form-control" } })
